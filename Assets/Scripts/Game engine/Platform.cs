@@ -36,7 +36,29 @@ public class Platform : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
+		
+		// Initialize the edge
+		if(this.RightEdge != null){
+			this.RightEdge.platform = this;
+			
+			// Place the edge
+			this.RightEdge.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x + (this.Length/2), this.gameObject.transform.position.y, 0);
+			
+			this.RightEdge.isRight = true;
+			this.RightEdge.isLeft = false;
+		}
+		
+		if(this.LeftEdge != null){
+			this.LeftEdge.platform = this;
+			
+			// Place the edge
+			this.LeftEdge.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x - (this.Length/2), this.gameObject.transform.position.y, 0);
+			
+			this.LeftEdge.isLeft = true;
+			this.LeftEdge.isRight = false;
+			
+		}
+		
 	}
 	
 	// Update is called once per frame
@@ -50,10 +72,13 @@ public class Platform : MonoBehaviour {
 		// If the fighter is above, and will land in the next update
 		if ((entity.gameObject.transform.position.y > this.gameObject.transform.position.y) && (entity.SpeedY/60 < -(entity.gameObject.transform.position.y - this.gameObject.transform.position.y)) ) {
 			
-			Debug.Log("Platform.CheckIfLanded : Landing");
 			
-			return true;
+			if((entity.gameObject.transform.position.x <= (this.gameObject.transform.position.x + this.Length/2)) && (entity.gameObject.transform.position.x >= (this.gameObject.transform.position.x - this.Length/2)) ) {
 			
+				Debug.Log("Platform.CheckIfLanded : Landing");
+				
+				return true;
+			}
 		}
 				
 		return false;

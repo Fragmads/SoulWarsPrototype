@@ -12,8 +12,6 @@ using System.Collections;
 public class Dashing : AFighterState
 {
 	
-	// Platform the fighter is on
-	public Platform platform;
 	
 	// Method
 	//
@@ -21,15 +19,18 @@ public class Dashing : AFighterState
 	public new void Start ()
 	{
 		base.Start();
+				
 		
 		// Set initial dash speed
+		XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
+		
 		if (fighter.isFacingLeft) {
 			
-			fighter.SpeedX = -fighter.DashInitialSpeed;
+			xMom.strength = -fighter.DashInitialSpeed;
 			
 		} else if (fighter.isFacingRight) {
 			
-			fighter.SpeedX = fighter.DashInitialSpeed;
+			xMom.strength = fighter.DashInitialSpeed;
 		}
 		
 	}
@@ -91,7 +92,6 @@ public class Dashing : AFighterState
 			
 			Standing state = this.gameObject.AddComponent<Standing> ();
 			fighter.State = state;
-			state.platform = this.platform;
 			Object.Destroy (this);
 			
 			Momentum momentum = this.gameObject.AddComponent<Momentum>();
@@ -113,13 +113,42 @@ public class Dashing : AFighterState
 		}
 			
 		// Jumping
-		if(input.Jump){
+		if(input.CommandJump){
 			
 			Jumping jumping = this.gameObject.AddComponent<Jumping>();
 			this.fighter.State = jumping;
 			Object.Destroy(this);
 			
 		}
+		
+		// Guarding
+		else if(input.CommandGuard){
+			
+			Guarding guarding = this.gameObject.AddComponent<Guarding>();
+			this.fighter.State = guarding;
+			Object.Destroy(this);
+			
+			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
+			xMom.strength = 0;
+			
+			
+			Momentum momentum = this.gameObject.AddComponent<Momentum>();
+			
+			// Depend on the way you were running
+			if(groundMomentum.strength < 0){
+				momentum.angle = 180;
+			}
+			else {
+				momentum.angle = 0;
+			}
+			
+			momentum.strength = Mathf.Abs(groundMomentum.strength);
+			// TODO find a friction coefficient
+			momentum.reduction = fighter.Weight * 10;
+			
+			
+		}
+		
 		
 	}	
 	

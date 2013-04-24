@@ -66,7 +66,19 @@ public class OnGround : AFighterState {
 		// The fighter is airborne, he is not on ground anymore
 		Airborne airborne = this.gameObject.AddComponent<Airborne>();
 		this.fighter.State = airborne;
-		//Object.Destroy(this.gameObject.GetComponent<XMomentum>());
+		
+		// If you are not on a platform anymore, you can't be in those state
+		if(this.gameObject.GetComponent<Standing>() != null){
+			Object.Destroy(this.gameObject.GetComponent<Standing>());
+		}
+		if(this.gameObject.GetComponent<Walking>() != null){
+			Object.Destroy(this.gameObject.GetComponent<Walking>());
+		}
+		if(this.gameObject.GetComponent<Dashing>() != null){
+			Object.Destroy(this.gameObject.GetComponent<Dashing>());
+		}
+		
+		
 		Object.Destroy(this);
 		
 		

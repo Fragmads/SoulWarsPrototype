@@ -13,8 +13,6 @@ using System.Collections;
 public class Walking : AFighterState {
 	
 	
-	// Platform the fighter is on
-	public Platform platform;
 	
 	// Event
 	
@@ -57,7 +55,6 @@ public class Walking : AFighterState {
 				
 				Standing state = this.gameObject.AddComponent<Standing>();
 				this.fighter.State = state;
-				state.platform = this.platform;
 				Object.Destroy(this);
 				
 			}
@@ -67,16 +64,27 @@ public class Walking : AFighterState {
 			
 			Dashing dashing = this.gameObject.AddComponent<Dashing>();
 			this.fighter.State = dashing;
-			dashing.platform = this.platform;
 			Object.Destroy(this);
 		}
 		
 		// Jumping
-		if(input.Jump){
+		if(input.CommandJump){
 			
 			Jumping jumping = this.gameObject.AddComponent<Jumping>();
 			this.fighter.State = jumping;
 			Object.Destroy(this);
+			
+		}
+		
+		// Guarding
+		else if(input.CommandGuard){
+			
+			Guarding guarding = this.gameObject.AddComponent<Guarding>();
+			this.fighter.State = guarding;
+			Object.Destroy(this);
+			
+			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
+			xMom.strength = 0;
 			
 		}
 		

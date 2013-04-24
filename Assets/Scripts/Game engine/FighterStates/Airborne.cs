@@ -18,7 +18,6 @@ public class Airborne : AFighterState {
 	
 	public int JumpLeft = 1;
 	
-	private bool JumpReleased = false;
 	
 	// Method
 	//
@@ -39,18 +38,27 @@ public class Airborne : AFighterState {
 	
 	// Read the command send by the player, and interpret them
 	public override void readCommand (InputCommand input ){
-		// TODO double jump, air attack, air dodge, air control
+		// TODO air attack, air dodge, air control
 		
-		// Forcing player to release jump before performing a double jump
-		if(!input.Jump){
-			this.JumpReleased = true;
-		}
+		
 		
 		// Double jumping
-		if(input.Jump && this.JumpLeft > 0 && this.gameObject.GetComponent<Jumping>() == null && this.JumpReleased){
+		if(input.CommandJump && this.JumpLeft > 0 && this.gameObject.GetComponent<Jumping>() == null ){
 			this.JumpLeft --;
 			
-			Momentum m = this.gameObject.AddComponent<Momentum>();
+			Momentum m;
+			
+			// If there is already a jump momentum, overwrite it, else create one
+			if(this.gameObject.GetComponent<JumpMomentum>() == null){
+				
+				m = this.gameObject.AddComponent<JumpMomentum>();
+				
+			}
+			else {
+				m = this.gameObject.GetComponent<JumpMomentum>();
+			}
+			
+			
 			m.strength = this.fighter.DoubleJumpStrength;
 			m.reduction = this.fighter.DoubleJumpReduction;
 			m.angle = 90;	
@@ -58,21 +66,56 @@ public class Airborne : AFighterState {
 			
 			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
 			xMom.strength = this.fighter.DoubleJumpHorizontalFactor * input.RightStickX;
-			
-			
-			
+					
 		}
+		
+		// Air control
+		
+		if(this.fighter.isFacingLeft){
+			
+			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
+			
+			// Acceleration toward the X speed
+			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.RightStickX;
+			
+			// Cap the X speed
+			if(xMom.strength > this.fighter.JumpBackHorizontalFactor){
+				xMom.strength = this.fighter.JumpBackHorizontalFactor;
+			}
+			
+			if(xMom.strength < -this.fighter.JumpForwardHorizontalFactor){
+				xMom.strength = -this.fighter.JumpForwardHorizontalFactor;
+			}
+			
+		} else {
+			
+			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
+			
+			// Acceleration toward the X speed
+			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.RightStickX;
+			
+			// Cap the X speed
+			if(xMom.strength < -this.fighter.JumpBackHorizontalFactor){
+				xMom.strength = -this.fighter.JumpBackHorizontalFactor;
+			}
+			
+			if(xMom.strength > this.fighter.JumpForwardHorizontalFactor){
+				xMom.strength = this.fighter.JumpForwardHorizontalFactor;
+			}
+		}
+		
+		//
+		
 		
 	}	
 	
 	void FixedUpdate() {
 		
-		
-		
 		// Check if the fighter as land on a platform
 		this.CheckForPlatforms();
 		
 	}// End FixedUpdate
+	
 	
 	
 	// Check if the fighter land on a platform
@@ -147,10 +190,12 @@ public class Airborne : AFighterState {
 						
 					}
 						
+					
+					
 				}
 				
 				// You can only land on one platform
-				break;
+					break;
 				
 			}
 			
@@ -173,22 +218,28 @@ public class Airborne : AFighterState {
 					// If the fighter is not attacking
 					if( attacking == null){
 						
-						if( this.fighter.isFacingLeft ){
+						if( this.fighter.isFacingRight ){
 							// TODO grab ledge	
+							this.GragEdge(p.LeftEdge);
 						} 
 						
 					}
 					// If he can grab the ledge
-					else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingLeft)){
+					else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingRight)){
 						
 						// TODO grab ledge
+						this.GragEdge(p.LeftEdge);
 						
 					}
 					
+					// You can only grab one ledge at once
+					break;
 					
 				}
+								
 			}
-			else if (p.RightEdge != null){
+			
+			if (p.RightEdge != null){
 				fighterEdgeY = this.gameObject.transform.position.y - p.RightEdge.gameObject.transform.position.y;
 				fighterEdgeX = this.gameObject.transform.position.x - p.RightEdge.gameObject.transform.position.x;
 				
@@ -198,21 +249,26 @@ public class Airborne : AFighterState {
 					// If the fighter is not attacking
 					if( attacking == null){
 						
-						if( this.fighter.isFacingRight ){
+						if( this.fighter.isFacingLeft ){
 							// TODO grab ledge	
+							this.GragEdge(p.RightEdge);
 						} 
 						
 					}
 					// If he can grab the ledge
-					else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingRight)){
+					else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingLeft)){
 						
 						// TODO grab ledge
+						this.GragEdge(p.RightEdge);
 						
 					}
 					
+					// You can only grab one ledge at once
+					break;
+					
 				}
+				
 			}
-			
 			
 		}
 		
@@ -221,8 +277,10 @@ public class Airborne : AFighterState {
 	// Grab an edge
 	private void GragEdge(Edge e){
 		
+		Debug.Log("Airborne - GrabEdge");
+		
 		// In case of blind auto edge grab
-		if(this.fighter.isFacingLeft != e.isLeft){
+		if(this.fighter.isFacingLeft != e.isRight){
 			
 			this.fighter.TurnAround();
 			
@@ -234,8 +292,17 @@ public class Airborne : AFighterState {
 		// Stop the fighter movement
 		Momentum.Clean(this.fighter);
 		
+		this.gameObject.GetComponent<XMomentum>().strength = 0;
+		
 		this.fighter.SpeedX = 0;
 		this.fighter.SpeedY = 0;
+		
+		
+		// State goes to ledge grabbing
+		LedgeGrabbing ledgeGrabbing = this.gameObject.AddComponent<LedgeGrabbing>();
+		ledgeGrabbing.edge = e;
+		this.fighter.State = ledgeGrabbing;
+		Object.Destroy(this);
 		
 		
 	}

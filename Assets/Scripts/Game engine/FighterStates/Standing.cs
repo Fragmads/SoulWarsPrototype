@@ -12,8 +12,6 @@ using System.Collections;
 
 public class Standing : AFighterState {
 	
-	// Platform the fighter is on
-	public Platform platform;
 	
 	// Method
 	//
@@ -55,7 +53,6 @@ public class Standing : AFighterState {
 			
 			Walking walking = this.gameObject.AddComponent<Walking>();
 			this.fighter.State = walking;
-			walking.platform = this.platform;
 			Object.Destroy(this);
 			
 		}
@@ -64,16 +61,24 @@ public class Standing : AFighterState {
 			
 			Dashing dashing = this.gameObject.AddComponent<Dashing>();
 			this.fighter.State = dashing;
-			dashing.platform = this.platform;
 			Object.Destroy(this);
 			
 		}
 		
 		// Jumping
-		else if(input.Jump){
+		else if(input.CommandJump){
 			
 			Jumping jumping = this.gameObject.AddComponent<Jumping>();
 			this.fighter.State = jumping;
+			Object.Destroy(this);
+			
+		}
+		
+		// Guarding
+		else if(input.CommandGuard){
+			
+			Guarding guarding = this.gameObject.AddComponent<Guarding>();
+			this.fighter.State = guarding;
 			Object.Destroy(this);
 			
 		}
@@ -92,12 +97,6 @@ public class Standing : AFighterState {
 			} 
 			
 		}
-		
-		/*
-		// Prevent the fighter from falling under the platform
-		this.gameObject.transform.position = new Vector3 (this.gameObject.transform.position.x, this.platform.gameObject.transform.position.y, 0 );
-		this.fighter.SpeedY = 0;
-		*/
 		
 	}
 	

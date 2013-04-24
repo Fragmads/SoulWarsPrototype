@@ -34,6 +34,31 @@ public class Guarding : AFighterState {
 			
 		}
 		
+		if(input.CommandJump){
+			
+			Jumping jumping = this.gameObject.AddComponent<Jumping>();
+			this.fighter.State = jumping;
+			Object.Destroy(this);
+			
+		}
+		
 	}	
+	
+	
+	public void FixedUpdate(){
+		
+		// When guarding, a fighter Horizontal speed tend to quickly reduce to 0
+		if(this.fighter.SpeedX != 0){
+			this.fighter.SpeedX = this.fighter.SpeedX/(this.fighter.GroundFriction);
+			
+			// If the speed is low enough, consider it's 0
+			if(Mathf.Abs(this.fighter.SpeedX) < 1){
+				this.fighter.SpeedX = 0;
+			} 
+			
+		}
+		
+	}
+	
 	
 }

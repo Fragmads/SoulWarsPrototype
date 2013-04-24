@@ -16,7 +16,9 @@ public class PCDebugInput : InputCommand {
 	
 	public float RStickCoef = 1.0f;
 	
-	void FixedUpdate(){
+	public new void FixedUpdate(){
+		
+		base.FixedUpdate();
 		
 		// Read debug input
 		

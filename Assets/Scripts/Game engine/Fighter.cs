@@ -22,7 +22,7 @@ public class Fighter : GravityEntity {
 	
 	public List<Move> MoveSet;
 	
-	public int MaxHp;
+	public int MaxHp = 100;
 	
 	private int currentHp;
 	
@@ -69,6 +69,9 @@ public class Fighter : GravityEntity {
 	public float JumpForwardHorizontalFactor = 5;
 	public float JumpBackHorizontalFactor = 3;
 	
+	// How much you can influence your X speed while in the air in one second
+	public float AirControlHorizontalSpeed = 3;
+	
 	// Number of double jump of the fighter
 	public int DoubleJump = 1;
 	
@@ -83,6 +86,11 @@ public class Fighter : GravityEntity {
 	// How much a fighter will slide when standing : Speed is divised by this factor every frame.
 	public float GroundFriction = 2f;
 	
+	
+	// Guard
+	public float GuardInitLife = 100f;
+	public float GuardLife;
+	
 	// Method
 	//
 	
@@ -92,6 +100,12 @@ public class Fighter : GravityEntity {
 		XMomentum gm = this.gameObject.AddComponent<XMomentum>();
 		gm.reduction = 0;
 		gm.strength = 0;
+		
+		// Init guard
+		this.GuardLife = this.GuardInitLife;
+		
+		// Init HP
+		this.CurrentHp = this.MaxHp;
 		
 	}	
 	

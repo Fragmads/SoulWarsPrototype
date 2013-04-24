@@ -67,7 +67,7 @@ public class Jumping : AFighterState {
 			// If it's a short hop
 			if(this.ShortHop){
 				
-				Momentum m = this.gameObject.AddComponent<Momentum>();
+				Momentum m = this.gameObject.AddComponent<JumpMomentum>();
 				m.strength = this.fighter.ShortJumpStrength;
 				m.reduction = this.fighter.ShortJumpReduction;
 				m.angle = 90;				
@@ -76,7 +76,7 @@ public class Jumping : AFighterState {
 			// If it's a full hop
 			else {
 				
-				Momentum m = this.gameObject.AddComponent<Momentum>();
+				Momentum m = this.gameObject.AddComponent<JumpMomentum>();
 				m.strength = this.fighter.FullJumpStrength;
 				m.reduction = this.fighter.ShortJumpReduction;
 				m.angle = 90;

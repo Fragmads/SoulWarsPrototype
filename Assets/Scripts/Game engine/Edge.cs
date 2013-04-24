@@ -15,9 +15,11 @@ public class Edge : MonoBehaviour {
 	// The entity grabbing the ledge
 	public AEntity grabber = null;
 	
+	public Platform platform;
+	
 	// General distance from where you can grab an edge
-	public static float grabDistanceY = 1.0f;
-	public static float grabDistanceX = 1.0f;
+	public static float grabDistanceY = 5.0f;
+	public static float grabDistanceX = 5.0f;
 	
 	// Incibility time
 	private static float invincibilityBaseTime = 0.5f ;

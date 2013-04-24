@@ -15,26 +15,42 @@ public abstract class Move : MonoBehaviour {
 	
 	// Properties
 	//
-	
-	// A list of State from which you can start this move
-	public List<AFighterState> StartingStates;
-	
-	// The State this move will put you in
-	public AFighterState State;
+		
+	// In number of frame
+	public int Length = 15;
 	
 	// When true, the fighter may grab the ledge 
 	public bool AutoEdgeGrab = false;
 	// Even when he is not facing the ledge.
 	public bool BlindAutoEdgeGrab = false;
 	
+	// Orientation of the move
+	public enum Orientation{Up, Down, Forward, Back, Neutral};
+	public Orientation orientation;
+	
+	public bool isSpecial = false;
+	
+	
+	// Method
+	//
 	
 	// Use this for initialization
 	void Start () {
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	public void FixedUpdate(){
+		
+		this.Length --;
+		
+		// If the move is finished, end it
+		if(this.Length <= 0){
+			this.EndMove();
+		}
+		
 	}
+	
+	// Called when the move End
+	public abstract void EndMove();
+	
 }

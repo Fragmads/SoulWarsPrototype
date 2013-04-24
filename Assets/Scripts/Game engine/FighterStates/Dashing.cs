@@ -6,6 +6,7 @@
 // Dashing : A state that describe a fighter dashing
 // 
 // State : Uncomplete
+
 using UnityEngine;
 using System.Collections;
 

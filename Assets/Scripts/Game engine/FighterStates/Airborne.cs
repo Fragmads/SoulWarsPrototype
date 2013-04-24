@@ -219,7 +219,7 @@ public class Airborne : AFighterState {
 					if( attacking == null){
 						
 						if( this.fighter.isFacingRight ){
-							// TODO grab ledge	
+							
 							this.GragEdge(p.LeftEdge);
 						} 
 						
@@ -227,7 +227,6 @@ public class Airborne : AFighterState {
 					// If he can grab the ledge
 					else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingRight)){
 						
-						// TODO grab ledge
 						this.GragEdge(p.LeftEdge);
 						
 					}
@@ -250,7 +249,7 @@ public class Airborne : AFighterState {
 					if( attacking == null){
 						
 						if( this.fighter.isFacingLeft ){
-							// TODO grab ledge	
+							
 							this.GragEdge(p.RightEdge);
 						} 
 						
@@ -258,7 +257,6 @@ public class Airborne : AFighterState {
 					// If he can grab the ledge
 					else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingLeft)){
 						
-						// TODO grab ledge
 						this.GragEdge(p.RightEdge);
 						
 					}

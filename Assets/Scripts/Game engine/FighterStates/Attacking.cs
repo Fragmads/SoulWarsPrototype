@@ -17,8 +17,9 @@ public class Attacking : AFighterState {
 	
 	public Move Attack;
 	
-	// The length of this attack in second
-	public int Length;
+	// The number of attack (Only available for ground attack, possible value : 0, 1, 2, 3)
+	public int AttackLevel = 0;
+		
 	
 	// Method
 	//
@@ -30,8 +31,11 @@ public class Attacking : AFighterState {
 	
 	// Read the command send by the player, and interpret them
 	public override void readCommand (InputCommand input ){
+		
 		// TODO go to next attack, Air control
 				
+		
+		
 	}	
 	
 	

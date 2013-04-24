@@ -16,7 +16,7 @@ public class AerialAttack : Move {
 	public float LandingLag = 0.5f;
 	public float LCancelLandingLag = 0.1f;
 	
-
+	
 	
 	// Use this for initialization
 	void Start () {
@@ -27,4 +27,9 @@ public class AerialAttack : Move {
 	void Update () {
 	
 	}
+	
+	public override void EndMove(){
+		// TODO
+	}
+	
 }

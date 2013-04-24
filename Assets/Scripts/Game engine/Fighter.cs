@@ -22,6 +22,11 @@ public class Fighter : GravityEntity {
 	
 	public List<Move> MoveSet;
 	
+	// Fighter's hitboxes and hurtboxes
+	public List<HitBox> Hitboxes;
+	public List<HurtBox> HurtBoxes;
+	
+	
 	public int MaxHp = 100;
 	
 	private int currentHp;
@@ -147,9 +152,91 @@ public class Fighter : GravityEntity {
 	}
 	
 	
-	// TODO ?
-	// Order the MoveSet so it follow an easy to use pattern
-	private void MoveSetOrdering() {
+	// Check What attack you are doing
+	// return true if you perform an attack, else return false
+	public bool CheckInputForStandingAttack(InputCommand i){
+		
+		// If it's a special attack
+		if(i.CommandSpecial){
+			
+			// Up
+			if(i.RightStickY > 0.8){
+				
+				
+				return true;
+			}
+			// Down
+			else if(i.RightStickY < -0.8){
+				
+				
+				return true;
+			}
+			// Forward
+			else if(i.RightStickX > 0.8 || i.RightStickX < -0.8){
+				
+				
+				return true;
+			}
+			// Neutral
+			else {
+				
+				
+				return true;
+			}
+			
+		}
+		// If the button has been released and is now pressed
+		else if(i.CommandAttack){
+			
+			
+			Attacking attacking = this.gameObject.GetComponent<Attacking>();
+			
+			// Add a level of attack
+			if(attacking != null && attacking.AttackLevel < 3){
+				attacking.AttackLevel ++;
+				
+				// Cap at level 3 attack
+				if(attacking.AttackLevel >= 3){
+					attacking.AttackLevel = 3;
+				}
+				
+			}
+		}
+			
+		// If the attack button is pressed, you attack
+		if(i.Attack){
+		
+			// Up
+			if(i.RightStickY > 0.8){
+				
+				foreach(GroundAttack ga in this.MoveSet){
+					
+					if(ga.orientation == Move.Orientation.Up){
+						
+					}
+					
+				}
+				
+				
+			}
+			// Down
+			else if(i.RightStickY < -0.8){
+				
+			}
+			// Forward
+			else if(i.RightStickX > 0.8 || i.RightStickX < -0.8){
+				
+			}
+			// Neutral
+			else {
+				
+			}
+
+			
+			
+		}
+		
+		return false;
 		
 	}
 	

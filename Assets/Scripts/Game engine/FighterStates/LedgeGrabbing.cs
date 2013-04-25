@@ -21,8 +21,18 @@ public class LedgeGrabbing : AFighterState {
 		
 		base.Start();
 		
-		// Pla ce the fighter at the ledge position
-		this.gameObject.transform.position = this.edge.gameObject.transform.position;
+		// Place the fighter at the ledge position		
+		if(this.edge.isLeft){
+			
+			Vector3 newPos = new Vector3(this.edge.gameObject.transform.position.x -0.1f, this.edge.gameObject.transform.position.y, 0);
+			this.gameObject.transform.position = newPos;
+		}
+		else if (this.edge.isRight) {
+			
+			Vector3 newPos = new Vector3(this.edge.gameObject.transform.position.x +0.1f, this.edge.gameObject.transform.position.y, 0);
+			this.gameObject.transform.position = newPos;
+			
+		}
 		
 	}
 	
@@ -39,6 +49,9 @@ public class LedgeGrabbing : AFighterState {
 		if(input.RightStickY < -0.5f){
 			
 			this.GoAirborne();
+			
+			Vector3 newPos = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y - Edge.grabDistanceY, 0);
+			this.gameObject.transform.position = newPos;
 			
 		}
 		

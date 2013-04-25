@@ -88,6 +88,84 @@ public class Walking : AFighterState {
 			
 		}
 		
+		// Special Move
+		else if(input.CommandSpecial){
+			
+			// Define the orientation of this special move
+			Move.Orientation orientation;
+			
+			if(input.RightStickY > 0.8){
+				orientation = Move.Orientation.Up;
+			}
+			else if(input.RightStickY < -0.8){
+				orientation = Move.Orientation.Down;
+			}
+			else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+				orientation = Move.Orientation.Forward;
+			}
+			else{
+				orientation = Move.Orientation.Neutral;
+			}
+			
+			// Find the right move in the moveset
+			foreach(GroundAttack ga in this.fighter.MoveSet){
+				
+				if(ga.isSpecial && ga.orientation == orientation){
+					
+					// Start the special
+					Attacking attacking = this.gameObject.AddComponent<Attacking>();
+					this.fighter.State = attacking;
+					attacking.Attack = ga;
+					Object.Destroy(this);
+					
+					break;
+					
+				}
+				
+			}			
+			
+		}
+		
+		// Attack move
+		else if(input.CommandAttack){
+			
+			// Define the orientation of this attack
+			Move.Orientation orientation;
+			
+			if(input.RightStickY > 0.8){
+				orientation = Move.Orientation.Up;
+			}
+			else if(input.RightStickY < -0.8){
+				orientation = Move.Orientation.Down;
+			}
+			else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+				orientation = Move.Orientation.Forward;
+			}
+			else{
+				orientation = Move.Orientation.Neutral;
+			}
+			
+			// Find the right move in the moveset
+			foreach(GroundAttack ga in this.fighter.MoveSet){
+				
+				if(!ga.isSpecial && ga.orientation == orientation && ga.AttackLevel == 1){
+					
+					// Start the attack
+					Attacking attacking = this.gameObject.AddComponent<Attacking>();
+					this.fighter.State = attacking;
+					attacking.Attack = ga;
+					attacking.AttackLevel = 1;
+					Object.Destroy(this);
+					
+					break;
+					
+				}
+				
+			}
+			
+		}
+		
+		
 	}
 	
 	

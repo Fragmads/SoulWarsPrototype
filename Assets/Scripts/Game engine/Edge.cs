@@ -18,12 +18,12 @@ public class Edge : MonoBehaviour {
 	public Platform platform;
 	
 	// General distance from where you can grab an edge
-	public static float grabDistanceY = 5.0f;
+	public static float grabDistanceY = 0.5f;
 	public static float grabDistanceX = 5.0f;
 	
-	// Incibility time
-	private static float invincibilityBaseTime = 0.5f ;
-	private static float invincibilityDecoy = 0.1f;
+	// Invicibility time
+	private static float invincibilityBaseTime = 1f ;
+	private static float invincibilityDecoy = 0.75f;
 	
 	// Properties
 	//
@@ -48,7 +48,7 @@ public class Edge : MonoBehaviour {
 		// If the invincibility time as decreased
 		if (this.InvincibilityTime < Edge.invincibilityBaseTime) {
 			// Add time for the next invincibility this edge provide
-			this.InvincibilityTime += Time.deltaTime;
+			this.InvincibilityTime += Time.fixedDeltaTime;
 		} 
 		// Else, if the invincibility time is too great
 		else if (this.InvincibilityTime > Edge.invincibilityBaseTime) {
@@ -69,6 +69,12 @@ public class Edge : MonoBehaviour {
 		}
 		
 		this.grabber = grabber;
+		if(this.grabber.gameObject.GetComponent<Fighter>() != null){
+			
+			this.grabber.gameObject.GetComponent<Fighter>().InvincibilityTime = this.InvincibilityTime;
+			
+		}
+		
 		
 	}
 	

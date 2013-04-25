@@ -24,6 +24,14 @@ public class Attacking : AFighterState {
 	// Method
 	//
 	
+	public new void Start(){
+		
+		base.Start();
+		
+		// TODO start the attack
+		
+	}
+	
 	// Send the name of this state
 	public override string getStateName() {
 		return "Attacking";
@@ -34,7 +42,45 @@ public class Attacking : AFighterState {
 		
 		// TODO go to next attack, Air control
 				
+		// If this attack is not a special and is performed on the ground
+		if(!this.Attack.isSpecial && this.Attack is GroundAttack){
+			
+			// If the player want to go to the next level of attack
+			if(input.CommandAttack){
+				
+			}
+			
+			// If the player want to repeat/spam this level of attack
+			if(this.Attack.isEnded && input.Attack){
+				
+				if(input.Attack){
+					
+					// TODO redo the attack
+					
+				}
+				
+			} 
+		}
 		
+		if(this.Attack.isEnded){
+			
+			if(this.gameObject.GetComponent<OnGround>() != null){
+				
+				// TODO stand
+				this.fighter.State = this.gameObject.AddComponent<Standing>();
+				Object.Destroy(this);
+				
+			}
+			
+			if(this.gameObject.GetComponent<Airborne>() != null){
+				
+				// TODO airborne				
+				this.fighter.State = this.gameObject.GetComponent<Airborne>();
+				Object.Destroy(this);				
+				
+			}
+			
+		}
 		
 	}	
 	

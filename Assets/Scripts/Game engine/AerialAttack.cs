@@ -28,8 +28,6 @@ public class AerialAttack : Move {
 	
 	}
 	
-	public override void EndMove(){
-		// TODO
-	}
+	
 	
 }

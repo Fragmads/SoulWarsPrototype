@@ -18,6 +18,7 @@ public class Airborne : AFighterState {
 	
 	public int JumpLeft = 1;
 	
+	public bool FastFalling = false;
 	
 	// Method
 	//
@@ -104,7 +105,101 @@ public class Airborne : AFighterState {
 			}
 		}
 		
-		//
+		// Fast Fall
+		// If you are not fast falling and your stick is down, Start Fast Fall
+		if(!this.FastFalling && input.RightStickY < - 0.8){						
+			this.FastFalling = true;
+			
+			// Double the gravity effect
+			GravityMomentum gm = this.gameObject.GetComponent<GravityMomentum>();
+			gm.strength = gm.strength * 2;
+			
+		}
+		// If you are fast falling and your stick is not down, End Fast Fall
+		else if(this.FastFalling && input.RightStickY >= -0.8){			
+			this.FastFalling = false;
+			
+			// Gravity effect divised by 2
+			GravityMomentum gm = this.gameObject.GetComponent<GravityMomentum>();
+			gm.strength = gm.strength / 2;
+			
+			
+		}
+		
+		// Aerial attack
+		// Special Move
+		if(input.CommandSpecial){
+			
+			// Define the orientation of this special move
+			Move.Orientation orientation;
+			
+			if(input.RightStickY > 0.8){
+				orientation = Move.Orientation.Up;
+			}
+			else if(input.RightStickY < -0.8){
+				orientation = Move.Orientation.Down;
+			}
+			else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+				orientation = Move.Orientation.Forward;
+			}
+			else{
+				orientation = Move.Orientation.Neutral;
+			}
+			
+			// Find the right move in the moveset
+			foreach(AerialAttack ga in this.fighter.MoveSet){
+				
+				if(ga.isSpecial && ga.orientation == orientation){
+					
+					// Start the special
+					Attacking attacking = this.gameObject.AddComponent<Attacking>();
+					this.fighter.State = attacking;
+					attacking.Attack = ga;
+					Object.Destroy(this);
+					
+				}
+				
+			}			
+			
+		}
+		// Attack move
+		else if(input.CommandAttack){
+			
+			// Define the orientation of this attack
+			Move.Orientation orientation;
+			
+			if(input.RightStickY > 0.8){
+				orientation = Move.Orientation.Up;
+			}
+			else if(input.RightStickY < -0.8){
+				orientation = Move.Orientation.Down;
+			}
+			else if((this.fighter.isFacingRight && input.RightStickX > 0.8) || (this.fighter.isFacingLeft && input.RightStickX < -0.8) ){
+				orientation = Move.Orientation.Forward;
+			}
+			else if((this.fighter.isFacingLeft && input.RightStickX > 0.8) || (this.fighter.isFacingRight && input.RightStickX < -0.8)){
+				orientation = Move.Orientation.Back;
+			}
+			else{
+				orientation = Move.Orientation.Neutral;
+			}
+			
+			// Find the right move in the moveset
+			foreach(AerialAttack ga in this.fighter.MoveSet){
+				
+				if(!ga.isSpecial && ga.orientation == orientation){
+					
+					// Start the attack
+					Attacking attacking = this.gameObject.AddComponent<Attacking>();
+					this.fighter.State = attacking;
+					attacking.Attack = ga;
+					Object.Destroy(this);
+					
+				}
+				
+			}
+			
+		}
 		
 		
 	}	
@@ -181,7 +276,6 @@ public class Airborne : AFighterState {
 					else {
 						
 						// Stop the fighter from falling
-						//this.fighter.SpeedY = 0;
 						
 						Lying lying = this.gameObject.AddComponent<Lying>();
 						this.fighter.State = lying;
@@ -314,6 +408,9 @@ public class Airborne : AFighterState {
 		OnGround onGround = this.gameObject.AddComponent<OnGround>();
 		onGround.platform = p;
 		Object.Destroy(this);
+		
+		// Reset Gravity
+		Object.Destroy(this.gameObject.GetComponent<GravityMomentum>());
 		
 	}
 	

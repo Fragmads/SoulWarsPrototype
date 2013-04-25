@@ -23,8 +23,5 @@ public class GroundAttack : Move {
 	
 	}
 	
-	public override void EndMove(){
-		// TODO
-	}
 	
 }

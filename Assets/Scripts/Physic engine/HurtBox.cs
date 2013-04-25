@@ -25,13 +25,6 @@ public class HurtBox : MonoBehaviour {
 	
 	}
 	
-	public void OnTriggerEnter(Collider other){
-		
-		// If this hitboxes touched an HurtBox that is'nt one of the owner
-		if(other.gameObject.GetComponent<HurtBox>() && !other.gameObject.GetComponent<HurtBox>().Owner.Equals(this.Owner)){
-			
-		}
-		
-	}
+	
 	
 }

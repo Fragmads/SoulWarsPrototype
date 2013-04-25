@@ -34,7 +34,7 @@ public class GravityEntity : AEntity {
 		
 	}
 	
-	
+	// Add the gravity Momentum
 	private void AddGravityMomentum(){
 		
 		Momentum gravity = this.gameObject.AddComponent<GravityMomentum>();

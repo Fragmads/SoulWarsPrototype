@@ -22,6 +22,9 @@ public class Attack : MonoBehaviour {
 	public int StartFrame;
 	public int EndFrame;
 	
+	public Momentum BaseKnockBack;
+	
+	public Fighter Owner;
 	
 	// List of the hiboxes this attack will use
 	public List<GameObject> Hitbox;
@@ -29,8 +32,44 @@ public class Attack : MonoBehaviour {
 	// List of target that this attack has hit
 	public List<AEntity> TargetHit;
 	
-	// Use this for initialization
-	void Start () {
+	// Method
+	//
 	
+	// Used at the frame the attack began
+	public void StartAttack () {
+		
+		// Add an hitbox to the right bones
+		foreach(GameObject go in this.Hitbox){
+			
+			HitBox hb = go.AddComponent<HitBox>();
+			hb.attack = this;
+			hb.Damage = this.Damage;
+			hb.KnockBack = this.BaseKnockBack;
+			hb.Owner = this.Owner;
+			
+		}
+		
 	}
+	
+	public void EndAttack(){
+		
+		// Remove the hitboxes from the bones
+		foreach(GameObject go in this.Hitbox){
+			
+			// For every HitBox found in the game object
+			foreach(HitBox hb in go.GetComponents<HitBox>()){
+				
+				// If the hitboxes is linked to this attack
+				if(hb.attack.Equals(this)){
+					// Remove the hitbox component of the bones
+					Object.Destroy(hb);
+					break;
+				}
+				
+			}
+			
+		}
+		
+	}
+	
 }

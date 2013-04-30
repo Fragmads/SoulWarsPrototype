@@ -95,6 +95,8 @@ public class Fighter : GravityEntity {
 	// Guard
 	public float GuardInitLife = 100f;
 	public float GuardLife;
+
+	
 	
 	// Method
 	//
@@ -133,11 +135,9 @@ public class Fighter : GravityEntity {
 			
 		}
 		
-		// Read the commands from the player
-		
+		// Read the commands from the player		
 		this.State.readCommand(this.Player.InputCommand);		
-		
-		
+
 		
 	}
 	

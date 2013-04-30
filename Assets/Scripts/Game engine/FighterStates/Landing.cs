@@ -33,6 +33,10 @@ public class Landing : AFighterState {
 			
 		}
 		
+		// play the landing animation
+		this.gameObject.animation.Play("landing", PlayMode.StopAll);
+		
+		
 	}
 	
 	// Send the name of this state

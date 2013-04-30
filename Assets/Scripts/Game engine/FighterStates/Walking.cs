@@ -15,6 +15,16 @@ public class Walking : AFighterState {
 	
 	
 	// Event
+	//
+	
+	public new void Start(){
+		
+		base.Start ();
+		
+		// play the walking animation
+		this.gameObject.animation.Play("walking", PlayMode.StopAll);
+		
+	}
 	
 	void Update(){
 		

@@ -20,6 +20,16 @@ public class Lying : AFighterState {
 	// Method
 	//
 	
+	
+	public new void Start(){
+		
+		base.Start ();
+		
+		// play the lying animation
+		this.gameObject.animation.Play("lying", PlayMode.StopAll);
+		
+	}
+	
 	// Send the name of this state
 	public override string getStateName() {
 		return "Lying";

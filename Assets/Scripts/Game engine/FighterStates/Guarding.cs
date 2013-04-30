@@ -15,6 +15,16 @@ public class Guarding : AFighterState {
 	// Method
 	//
 	
+	
+	public new void Start(){
+		
+		base.Start();
+		
+		// Play the guard animation
+		this.gameObject.animation.Play("guard", PlayMode.StopAll);	
+		
+	}
+	
 	// Send the name of this state
 	public override string getStateName() {
 		return "Guarding";

@@ -34,6 +34,9 @@ public class LedgeGrabbing : AFighterState {
 			
 		}
 		
+		// play the ledgeGrab animation
+		this.gameObject.animation.Play("ledgeGrab", PlayMode.StopAll);
+		
 	}
 	
 	// Send the name of this state

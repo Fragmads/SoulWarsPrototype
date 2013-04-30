@@ -27,6 +27,9 @@ public class Jumping : AFighterState {
 		
 		this.JumpLag = this.fighter.JumpLag;
 		
+		// play the jumping animation
+		this.gameObject.animation.Play("jumping", PlayMode.StopAll);
+		
 	}
 	
 	
@@ -53,7 +56,7 @@ public class Jumping : AFighterState {
 	
 	public void FixedUpdate(){
 		
-		this.JumpLag -= Time.fixedDeltaTime;
+		this.JumpLag --;
 		
 		// If the fighter finished to jump 
 		if(this.JumpLag <= 0){

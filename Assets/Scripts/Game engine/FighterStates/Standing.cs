@@ -28,13 +28,9 @@ public class Standing : AFighterState {
 			groundMomentum.strength = 0;
 		}
 		
-		/*
-		// Start the standing animation
-		this.gameObject.animation.wrapMode = WrapMode.Loop;
-		//this.gameObject.animation.CrossFade("Standing", 0f, PlayMode.StopAll);
-		this.gameObject.animation.CrossFade("idle", 0f, PlayMode.StopAll);
-		*/
 		
+		// Start the standing animation
+		this.gameObject.animation.Play("standing", PlayMode.StopAll);
 		
 	}
 	

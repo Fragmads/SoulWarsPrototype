@@ -20,6 +20,9 @@ public class Airborne : AFighterState {
 	
 	public bool FastFalling = false;
 	
+	private float LastX;
+	private float LastY;
+	
 	// Method
 	//
 	
@@ -29,6 +32,9 @@ public class Airborne : AFighterState {
 		
 		// Assign the number of double jump left to the fighter
 		this.JumpLeft = this.fighter.DoubleJump;
+		
+		// Play the airborne animation
+		this.gameObject.animation.Play("airborne");		
 		
 	}
 	
@@ -209,6 +215,11 @@ public class Airborne : AFighterState {
 		// Check if the fighter as land on a platform
 		this.CheckForPlatforms();
 		
+				
+		// Latest
+		this.LastX = this.gameObject.transform.position.x;
+		this.LastY = this.gameObject.transform.position.y;
+		
 	}// End FixedUpdate
 	
 	
@@ -220,8 +231,8 @@ public class Airborne : AFighterState {
 		foreach(Platform p in Platform.StagePlatforms){
 			
 			// Check if this fighter has landed
-			if (p.CheckIfLanded(this.fighter)){
-				
+			if (p.CheckIfLanded(this.fighter, this.LastX, this.LastY)){
+				Debug.Log("Airborne - fighter landing to a platform");
 				// Set the fighter height to the platform's
 				this.fighter.gameObject.transform.position = new Vector3( this.fighter.gameObject.transform.position.x, p.gameObject.transform.position.y , 0);
 				

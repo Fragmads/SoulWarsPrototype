@@ -34,6 +34,10 @@ public class Dashing : AFighterState
 			xMom.strength = fighter.DashInitialSpeed;
 		}
 		
+		
+		// Play the dashing animation
+		this.gameObject.animation.Play("dashing", PlayMode.StopAll);	
+		
 	}
 	
 	// Send the name of this state

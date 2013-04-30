@@ -66,11 +66,12 @@ public class Platform : MonoBehaviour {
 	
 	}
 	
-	public bool CheckIfLanded(AEntity entity){
+	public bool CheckIfLanded(AEntity entity, float oldX, float oldY ){
 		
 		
-		// If the fighter is above, and will land in the next update
-		if ((entity.gameObject.transform.position.y > this.gameObject.transform.position.y) && (entity.SpeedY/60 < -(entity.gameObject.transform.position.y - this.gameObject.transform.position.y)) ) {
+		// If the fighter was above, and land in this update
+		if ((oldY > this.gameObject.transform.position.y) && 
+			(entity.gameObject.transform.position.y <= this.gameObject.transform.position.y) ) {
 			
 			
 			if((entity.gameObject.transform.position.x <= (this.gameObject.transform.position.x + this.Length/2)) && (entity.gameObject.transform.position.x >= (this.gameObject.transform.position.x - this.Length/2)) ) {

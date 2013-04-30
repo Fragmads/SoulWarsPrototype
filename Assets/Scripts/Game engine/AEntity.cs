@@ -23,7 +23,7 @@ public abstract class AEntity : MonoBehaviour {
 	
 	public void FixedUpdate(){
 		
-		// TODO : Calculate applied momentum
+		// Calculate applied momentum
 		this.ApplyMomentum();
 		
 		

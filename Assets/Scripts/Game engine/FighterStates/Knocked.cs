@@ -37,6 +37,9 @@ public class Knocked : AFighterState {
 			
 		}
 		
+		// play the knocked animation
+		this.gameObject.animation.Play("knocked", PlayMode.StopAll);
+		
 	}
 	
 	// Send the name of this state

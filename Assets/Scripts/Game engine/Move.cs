@@ -16,6 +16,12 @@ public abstract class Move : MonoBehaviour {
 	// Properties
 	//
 		
+	// Prefab of this move
+	public GameObject Prefab;
+	
+	// Name of the animation of the Move
+	public string AnimationName;
+	
 	// In number of frame
 	public int Length = 15;
 	private int FrameNumber = 0;
@@ -38,6 +44,8 @@ public abstract class Move : MonoBehaviour {
 	// List of attacks performed during the move (some move are multi hits move)
 	public List<Attack> Attacks;
 	
+	// Owner of this move
+	public Fighter Owner;
 	
 	// Method
 	//
@@ -57,7 +65,7 @@ public abstract class Move : MonoBehaviour {
 			
 			// Check if it start or end
 			if(a.StartFrame == this.FrameNumber){
-				
+				a.Owner = this.Owner;
 				a.StartAttack();
 				
 			}
@@ -83,6 +91,11 @@ public abstract class Move : MonoBehaviour {
 		}
 		
 		this.isEnded = true;
+		
+		
+		
+		// Destroy the game object attached to this move
+		//Object.Destroy(this.gameObject);
 		
 	}
 	

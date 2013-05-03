@@ -15,6 +15,9 @@ public class HitBox : MonoBehaviour {
 	// Properties
 	//
 	
+	// The name of the bone this HitBox is attached to
+	public string BoneName;
+	
 	// Owner of this hitbox
 	public Fighter Owner;
 	

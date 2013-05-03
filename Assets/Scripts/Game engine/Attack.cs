@@ -27,7 +27,10 @@ public class Attack : MonoBehaviour {
 	public Fighter Owner;
 	
 	// List of the hiboxes this attack will use
-	public List<GameObject> Hitbox;
+	public List<string> HitboxName;
+	private List<HitBox> HitBox = new List<HitBox>();
+	
+	
 	
 	// List of target that this attack has hit
 	public List<AEntity> TargetHit;
@@ -38,36 +41,43 @@ public class Attack : MonoBehaviour {
 	// Used at the frame the attack began
 	public void StartAttack () {
 		
-		// Add an hitbox to the right bones
-		foreach(GameObject go in this.Hitbox){
+		this.HitBox.Clear();
+		
+		// Enable and init the hitbox to the right bones
+		foreach(string s in this.HitboxName){
 			
-			HitBox hb = go.AddComponent<HitBox>();
-			hb.attack = this;
-			hb.Damage = this.Damage;
-			hb.KnockBack = this.BaseKnockBack;
-			hb.Owner = this.Owner;
+			// In every hitbox of the fighter
+			foreach(HitBox hb in this.Owner.GetComponentsInChildren<HitBox>()){
+				
+				// Find the right one
+				if(hb.BoneName == s){
+					
+					// Add the hitbox to the list
+					this.HitBox.Add(hb);
+					
+					//Debug.Log("Attack - StartAttack : add hitbox to "+hb.BoneName);
+					hb.enabled = true;
+					hb.attack = this;
+					hb.Damage = this.Damage;
+					hb.KnockBack = this.BaseKnockBack;
+					hb.Owner = this.Owner;
+					
+				}			
+				
+			}
+			
 			
 		}
 		
 	}
 	
 	public void EndAttack(){
-		
-		// Remove the hitboxes from the bones
-		foreach(GameObject go in this.Hitbox){
-			
-			// For every HitBox found in the game object
-			foreach(HitBox hb in go.GetComponents<HitBox>()){
-				
-				// If the hitboxes is linked to this attack
-				if(hb.attack.Equals(this)){
-					// Remove the hitbox component of the bones
-					Object.Destroy(hb);
-					break;
-				}
-				
-			}
-			
+					
+		// For every HitBox 
+		foreach(HitBox hb in this.HitBox){
+						
+			// Disable the hitbox
+			hb.enabled = false;
 		}
 		
 	}

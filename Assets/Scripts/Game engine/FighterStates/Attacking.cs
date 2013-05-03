@@ -28,7 +28,16 @@ public class Attacking : AFighterState {
 		
 		base.Start();
 		
-		// TODO start the attack
+		
+		// Play the animation
+		this.gameObject.animation.Play(this.Attack.AnimationName);
+		
+		// Instantiate a game object that will represent the attack
+		GameObject go = (GameObject) GameObject.Instantiate(this.Attack.Prefab);
+		
+		// This temp object is now the attack
+		this.Attack = go.GetComponent<Move>();
+		this.Attack.Owner = this.fighter;
 		
 	}
 	
@@ -48,21 +57,39 @@ public class Attacking : AFighterState {
 			// If the player want to go to the next level of attack
 			if(input.CommandAttack){
 				
+				this.AttackLevel++;
+				
+				// Cap the attack level at 3
+				if(this.AttackLevel <4){
+				
+					// Destroy the dummy for the past attack
+					Object.Destroy(this.Attack.gameObject);
+					
+					// Launch an attack
+					this.LaunchAttack(input);
+				}
+				else{
+					this.AttackLevel = 3;
+				}
+				
 			}
 			
 			// If the player want to repeat/spam this level of attack
 			if(this.Attack.isEnded && input.Attack){
 				
-				if(input.Attack){
-					
-					// TODO redo the attack
-					
-				}
+				// Destroy the dummy for the past attack
+				Object.Destroy(this.Attack.gameObject);
+				
+				// Launch an attack
+				this.LaunchAttack(input);			
 				
 			} 
 		}
 		
 		if(this.Attack.isEnded){
+			
+			// Destroy the dummy for the attack
+			Object.Destroy(this.Attack.gameObject);
 			
 			if(this.gameObject.GetComponent<OnGround>() != null){
 				
@@ -83,6 +110,48 @@ public class Attacking : AFighterState {
 		}
 		
 	}	
+	
+	private void LaunchAttack(InputCommand input){
+		
+		// Define the orientation of this attack
+		Move.Orientation orientation;
+		
+		if(input.RightStickY > 0.8){
+			orientation = Move.Orientation.Up;
+		}
+		else if(input.RightStickY < -0.8){
+			orientation = Move.Orientation.Down;
+		}
+		else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+			orientation = Move.Orientation.Forward;
+		}
+		else{
+			orientation = Move.Orientation.Neutral;
+		}
+	
+		// Find the right move in the moveset
+		foreach(GroundAttack ga in this.fighter.MoveSet){
+			
+			if(!ga.isSpecial && ga.orientation == orientation && ga.AttackLevel == this.AttackLevel){
+				
+				// Play the animation
+				this.gameObject.animation.Play(this.Attack.AnimationName);
+				
+				// Instantiate a game object that will represent the attack
+				GameObject go = (GameObject) GameObject.Instantiate(ga.Prefab);
+				
+				// This temp object is now the attack
+				this.Attack = go.GetComponent<Move>();
+				this.Attack.Owner = this.fighter;
+				
+				break;
+				
+			}
+			
+		}
+		
+		
+	}
 	
 	
 }

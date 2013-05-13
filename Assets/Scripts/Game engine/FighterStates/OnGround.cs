@@ -25,6 +25,20 @@ public class OnGround : AFighterState {
 		//gm.strength = 0;
 		
 		
+		// Be sure that you are no longer airborne
+		if(this.gameObject.GetComponent<Airborne>() != null){
+			
+			GameObject.Destroy(this.gameObject.GetComponent<Airborne>());
+			
+		}
+		
+		// Be sure that you are no longer edge grabbing
+		if(this.gameObject.GetComponent<LedgeGrabbing>() != null){
+			
+			GameObject.Destroy(this.gameObject.GetComponent<LedgeGrabbing>());
+			
+		}
+		
 	}
 	
 	// Send the name of this state

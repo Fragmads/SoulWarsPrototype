@@ -30,7 +30,7 @@ public class Attacking : AFighterState {
 		
 		
 		// Play the animation
-		this.gameObject.animation.Play(this.Attack.AnimationName);
+		this.gameObject.animation.Play(this.Attack.AnimationName, PlayMode.StopAll);
 		
 		// Instantiate a game object that will represent the attack
 		GameObject go = (GameObject) GameObject.Instantiate(this.Attack.Prefab);
@@ -54,6 +54,18 @@ public class Attacking : AFighterState {
 		// If this attack is not a special and is performed on the ground
 		if(!this.Attack.isSpecial && this.Attack is GroundAttack){
 			
+			
+			// If the player want to repeat/spam this level of attack
+			if(this.Attack.isEnded && input.Attack){
+				
+				// Destroy the dummy for the past attack
+				Object.Destroy(this.Attack.gameObject);
+				
+				// Launch an attack
+				this.LaunchAttack(input);			
+				
+			}
+			
 			// If the player want to go to the next level of attack
 			if(input.CommandAttack){
 				
@@ -74,19 +86,10 @@ public class Attacking : AFighterState {
 				
 			}
 			
-			// If the player want to repeat/spam this level of attack
-			if(this.Attack.isEnded && input.Attack){
-				
-				// Destroy the dummy for the past attack
-				Object.Destroy(this.Attack.gameObject);
-				
-				// Launch an attack
-				this.LaunchAttack(input);			
-				
-			} 
+			 
 		}
 		
-		if(this.Attack.isEnded){
+		if(this.Attack.isEnded && this.Attack != null){
 			
 			// Destroy the dummy for the attack
 			Object.Destroy(this.Attack.gameObject);
@@ -106,6 +109,13 @@ public class Attacking : AFighterState {
 				Object.Destroy(this);				
 				
 			}
+			
+		}
+		
+		// If the fighter is airborne
+		if(this.gameObject.GetComponent<Airborne>() != null){
+			// Check the air control of the fighter	
+			this.gameObject.GetComponent<Airborne>().AirControl(input);
 			
 		}
 		
@@ -134,8 +144,7 @@ public class Attacking : AFighterState {
 			
 			if(!ga.isSpecial && ga.orientation == orientation && ga.AttackLevel == this.AttackLevel){
 				
-				// Play the animation
-				this.gameObject.animation.Play(this.Attack.AnimationName);
+				
 				
 				// Instantiate a game object that will represent the attack
 				GameObject go = (GameObject) GameObject.Instantiate(ga.Prefab);
@@ -143,6 +152,9 @@ public class Attacking : AFighterState {
 				// This temp object is now the attack
 				this.Attack = go.GetComponent<Move>();
 				this.Attack.Owner = this.fighter;
+				
+				// Play the animation
+				this.gameObject.animation.Play(this.Attack.AnimationName, PlayMode.StopAll);
 				
 				break;
 				

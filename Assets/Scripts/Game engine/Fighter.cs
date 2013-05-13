@@ -39,6 +39,8 @@ public class Fighter : GravityEntity {
 				this.currentHp = value;
 			}
 			else {
+				
+				Debug.Log("Fighter - Mort");
 				// TODO
 				// Trigger death
 			}		
@@ -135,9 +137,10 @@ public class Fighter : GravityEntity {
 			
 		}
 		
-		// Read the commands from the player		
-		this.State.readCommand(this.Player.InputCommand);		
-
+		if(this.Player != null){
+			// Read the commands from the player		
+			this.State.readCommand(this.Player.InputCommand);		
+		}
 		
 	}
 	

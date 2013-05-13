@@ -32,6 +32,8 @@ public class Standing : AFighterState {
 		// Start the standing animation
 		this.gameObject.animation.Play("standing", PlayMode.StopAll);
 		
+		
+		
 	}
 	
 	
@@ -137,9 +139,9 @@ public class Standing : AFighterState {
 			}
 			
 			// Find the right move in the moveset
-			foreach(GroundAttack ga in this.fighter.MoveSet){
+			foreach(Move ga in this.fighter.MoveSet){
 				
-				if(!ga.isSpecial && ga.orientation == orientation && ga.AttackLevel == 1){
+				if(ga is GroundAttack && !ga.isSpecial && ga.orientation == orientation && ((GroundAttack)ga).AttackLevel == 1){
 					
 					// Start the attack
 					Attacking attacking = this.gameObject.AddComponent<Attacking>();

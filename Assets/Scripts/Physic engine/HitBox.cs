@@ -44,8 +44,31 @@ public class HitBox : MonoBehaviour {
 	public void OnTriggerEnter(Collider other){
 		
 		// If this hitboxes touched an HurtBox that isn't one of the owner
-		if(other.gameObject.GetComponent<HurtBox>() && !other.gameObject.GetComponent<HurtBox>().Owner.Equals(this.Owner)){
-			// TODO hit the target
+		if(this.enabled && other.gameObject.GetComponent<HurtBox>()!= null && !other.gameObject.GetComponent<HurtBox>().Owner.Equals(this.Owner)){
+			
+			// Hit each target once per attack max
+			if(!this.attack.TargetHit.Contains(other.gameObject.GetComponent<HurtBox>().Owner)){
+				
+				AEntity target = other.gameObject.GetComponent<HurtBox>().Owner;
+				
+				this.attack.TargetHit.Add(target);
+				Debug.Log("HitBox - Hit !");
+				
+				// If the target can take hit
+				if(target.gameObject.GetComponent<Fighter>() != null){
+					
+					Fighter f = target.gameObject.GetComponent<Fighter>();
+					// Reduce HP
+					f.CurrentHp -= this.attack.Damage;
+					
+					// TODO Give momentum based on damage % and stuff
+					
+				}
+				
+			}
+			
+			
+				
 		}
 		
 	}

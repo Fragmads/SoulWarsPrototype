@@ -37,6 +37,21 @@ public class Airborne : AFighterState {
 		// Play the airborne animation
 		this.gameObject.animation.Play("airborne");		
 		
+		// Be sure that you are no longer edge grabbing
+		if(this.gameObject.GetComponent<LedgeGrabbing>() != null){
+			
+			GameObject.Destroy(this.gameObject.GetComponent<LedgeGrabbing>());
+			
+		}
+		
+		// Be sure that you are no longer on the ground
+		if(this.gameObject.GetComponent<OnGround>() != null){
+			
+			GameObject.Destroy(this.gameObject.GetComponent<OnGround>());
+			
+		}
+		
+		
 	}
 	
 	// Send the name of this state
@@ -77,61 +92,9 @@ public class Airborne : AFighterState {
 					
 		}
 		
-		// Air control
+		// Air Control
+		this.AirControl(input);
 		
-		if(this.fighter.isFacingLeft){
-			
-			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
-			
-			// Acceleration toward the X speed
-			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.RightStickX;
-			
-			// Cap the X speed
-			if(xMom.strength > this.fighter.JumpBackHorizontalFactor){
-				xMom.strength = this.fighter.JumpBackHorizontalFactor;
-			}
-			
-			if(xMom.strength < -this.fighter.JumpForwardHorizontalFactor){
-				xMom.strength = -this.fighter.JumpForwardHorizontalFactor;
-			}
-			
-		} else {
-			
-			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
-			
-			// Acceleration toward the X speed
-			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.RightStickX;
-			
-			// Cap the X speed
-			if(xMom.strength < -this.fighter.JumpBackHorizontalFactor){
-				xMom.strength = -this.fighter.JumpBackHorizontalFactor;
-			}
-			
-			if(xMom.strength > this.fighter.JumpForwardHorizontalFactor){
-				xMom.strength = this.fighter.JumpForwardHorizontalFactor;
-			}
-		}
-		
-		// Fast Fall
-		// If you are not fast falling and your stick is down, Start Fast Fall
-		if(!this.FastFalling && input.RightStickY < - 0.8){						
-			this.FastFalling = true;
-			
-			// Double the gravity effect
-			GravityMomentum gm = this.gameObject.GetComponent<GravityMomentum>();
-			gm.strength = gm.strength * 2;
-			
-		}
-		// If you are fast falling and your stick is not down, End Fast Fall
-		else if(this.FastFalling && input.RightStickY >= -0.8){			
-			this.FastFalling = false;
-			
-			// Gravity effect divised by 2
-			GravityMomentum gm = this.gameObject.GetComponent<GravityMomentum>();
-			gm.strength = gm.strength / 2;
-			
-			
-		}
 		
 		// Aerial attack
 		// Special Move
@@ -152,6 +115,7 @@ public class Airborne : AFighterState {
 			else{
 				orientation = Move.Orientation.Neutral;
 			}
+			
 			
 			// Find the right move in the moveset
 			foreach(AerialAttack ga in this.fighter.MoveSet){
@@ -192,15 +156,16 @@ public class Airborne : AFighterState {
 			}
 			
 			// Find the right move in the moveset
-			foreach(AerialAttack ga in this.fighter.MoveSet){
+  			foreach(Move aa in this.fighter.MoveSet){
 				
-				if(!ga.isSpecial && ga.orientation == orientation){
+				if(aa is AerialAttack && !aa.isSpecial && aa.orientation == orientation){
 					
 					// Start the attack
 					Attacking attacking = this.gameObject.AddComponent<Attacking>();
 					this.fighter.State = attacking;
-					attacking.Attack = ga;
-					Object.Destroy(this);
+					attacking.Attack = aa;
+					
+					break;
 					
 				}
 				
@@ -423,6 +388,68 @@ public class Airborne : AFighterState {
 		
 		// Reset Gravity
 		Object.Destroy(this.gameObject.GetComponent<GravityMomentum>());
+		
+	}
+	
+	
+	public void AirControl(InputCommand input){
+		
+		
+		// Air control
+		
+		if(this.fighter.isFacingLeft){
+			
+			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
+			
+			// Acceleration toward the X speed
+			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.RightStickX;
+			
+			// Cap the X speed
+			if(xMom.strength > this.fighter.JumpBackHorizontalFactor){
+				xMom.strength = this.fighter.JumpBackHorizontalFactor;
+			}
+			
+			if(xMom.strength < -this.fighter.JumpForwardHorizontalFactor){
+				xMom.strength = -this.fighter.JumpForwardHorizontalFactor;
+			}
+			
+		} else {
+			
+			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
+			
+			// Acceleration toward the X speed
+			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.RightStickX;
+			
+			// Cap the X speed
+			if(xMom.strength < -this.fighter.JumpBackHorizontalFactor){
+				xMom.strength = -this.fighter.JumpBackHorizontalFactor;
+			}
+			
+			if(xMom.strength > this.fighter.JumpForwardHorizontalFactor){
+				xMom.strength = this.fighter.JumpForwardHorizontalFactor;
+			}
+		}
+		
+		// Fast Fall
+		// If you are not jumping, not fast falling and your stick is down, Start Fast Fall
+		if(this.gameObject.GetComponent<JumpMomentum>() == null && !this.FastFalling && input.RightStickY < - 0.8){						
+			this.FastFalling = true;
+			
+			// Double the gravity effect
+			GravityMomentum gm = this.gameObject.GetComponent<GravityMomentum>();
+			gm.strength = gm.strength * 2;
+			
+		}
+		// If you are fast falling and your stick is not down, End Fast Fall
+		else if(this.gameObject.GetComponent<JumpMomentum>() == null && (this.FastFalling && input.RightStickY >= -0.8)){			
+			this.FastFalling = false;
+			
+			// Gravity effect divised by 2
+			GravityMomentum gm = this.gameObject.GetComponent<GravityMomentum>();
+			gm.strength = gm.strength / 2;
+			
+			
+		}
 		
 	}
 	

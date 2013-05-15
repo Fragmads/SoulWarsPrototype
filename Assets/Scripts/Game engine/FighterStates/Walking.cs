@@ -118,7 +118,7 @@ public class Walking : AFighterState {
 			}
 			
 			// Find the right move in the moveset
-			foreach(GroundAttack ga in this.fighter.MoveSet){
+			foreach(GroundAttack ga in this.fighter.GroundMoveSet){
 				
 				if(ga.isSpecial && ga.orientation == orientation){
 					
@@ -156,7 +156,7 @@ public class Walking : AFighterState {
 			}
 			
 			// Find the right move in the moveset
-			foreach(GroundAttack ga in this.fighter.MoveSet){
+			foreach(GroundAttack ga in this.fighter.GroundMoveSet){
 				
 				if(!ga.isSpecial && ga.orientation == orientation && ga.AttackLevel == 1){
 					

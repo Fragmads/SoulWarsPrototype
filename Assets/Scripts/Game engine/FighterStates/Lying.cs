@@ -12,9 +12,7 @@ using System.Collections;
 
 public class Lying : AFighterState {
 	
-	// Platform the fighter is on
-	public Platform platform;
-	
+	// Platform the fighter is on	
 	public float LyingMaxTime = 5f;
 	
 	// Method
@@ -26,7 +24,12 @@ public class Lying : AFighterState {
 		base.Start ();
 		
 		// play the lying animation
-		this.gameObject.animation.Play("lying", PlayMode.StopAll);
+		//this.gameObject.animation.Play("lying", PlayMode.StopAll);
+		
+		// Stop Movement when you are lying on the floor
+		Momentum.Clean(this.fighter);
+		
+		this.gameObject.GetComponent<XMomentum>().strength = 0;
 		
 	}
 	
@@ -42,16 +45,19 @@ public class Lying : AFighterState {
 	}	
 	
 	
-	void FixedUpdate(){
-		
+	public void FixedUpdate(){
+				
 		this.LyingMaxTime -= Time.fixedDeltaTime;
 		
 		// If the fighter is lying for too long.
 		if(this.LyingMaxTime <= 0){
 			
-			// TODO get up automatically
 			
-			this.LyingMaxTime = 5f;
+			// The fighter get up automatically
+			Standing s = this.gameObject.AddComponent<Standing>();
+			this.fighter.State = s;
+			
+			GameObject.Destroy(this);
 			
 		}
 		

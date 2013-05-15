@@ -56,7 +56,7 @@ public class Attacking : AFighterState {
 			
 			
 			// If the player want to repeat/spam this level of attack
-			if(this.Attack.isEnded && input.Attack){
+			if(this.Attack.isEnded && input.Attack && this.AttackLevel < 3){
 				
 				// Destroy the dummy for the past attack
 				Object.Destroy(this.Attack.gameObject);
@@ -85,8 +85,7 @@ public class Attacking : AFighterState {
 				}
 				
 			}
-			
-			 
+						 
 		}
 		
 		if(this.Attack.isEnded && this.Attack != null){
@@ -140,7 +139,7 @@ public class Attacking : AFighterState {
 		}
 	
 		// Find the right move in the moveset
-		foreach(GroundAttack ga in this.fighter.MoveSet){
+		foreach(GroundAttack ga in this.fighter.GroundMoveSet){
 			
 			if(!ga.isSpecial && ga.orientation == orientation && ga.AttackLevel == this.AttackLevel){
 				

@@ -37,22 +37,26 @@ public class Momentum : MonoBehaviour {
 	// FixedUpdate is called once per game frame
 	void FixedUpdate () {
 		
-		// Decrease the strength of the momentum
+		// If the momentum is attached to an entity
+		if(this.gameObject.GetComponent<AEntity>() != null){
 		
-		this.strength -= this.reduction/60;
-		
-		// If the momentum has stopped, doesnt apply to the X momentum
-		if(this.strength <= 0 && !(this is XMomentum)){
+			// Decrease the strength of the momentum
 			
-			Object.Destroy(this);
-			this.strength = 0;
-			this.reduction = 0;
-			this.vector = new Vector2 (0,0);
-		}
-		else {		
-		
-			this.RecalculateVector();
+			this.strength -= this.reduction/60;
 			
+			// If the momentum has stopped, doesnt apply to the X momentum
+			if(this.strength <= 0 && !(this is XMomentum)){
+				
+				Object.Destroy(this);
+				this.strength = 0;
+				this.reduction = 0;
+				this.vector = new Vector2 (0,0);
+			}
+			else {		
+			
+				this.RecalculateVector();
+				
+			}
 		}
 	}
 	

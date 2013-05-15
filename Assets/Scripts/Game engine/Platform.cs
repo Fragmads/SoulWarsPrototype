@@ -18,8 +18,7 @@ public class Platform : MonoBehaviour {
 	
 	// Properties
 	//
-	
-	
+		
 	public float Length;
 	
 	public bool CanDrop = false;
@@ -70,8 +69,8 @@ public class Platform : MonoBehaviour {
 		
 		
 		// If the fighter was above, and land in this update
-		if ((oldY > this.gameObject.transform.position.y) && 
-			(entity.gameObject.transform.position.y <= this.gameObject.transform.position.y) ) {
+		if ((oldY >= this.gameObject.transform.position.y) && 
+			(entity.gameObject.transform.position.y < this.gameObject.transform.position.y) ) {
 			
 			
 			if((entity.gameObject.transform.position.x <= (this.gameObject.transform.position.x + this.Length/2)) && (entity.gameObject.transform.position.x >= (this.gameObject.transform.position.x - this.Length/2)) ) {

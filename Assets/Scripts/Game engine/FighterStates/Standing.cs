@@ -102,7 +102,7 @@ public class Standing : AFighterState {
 			}
 			
 			// Find the right move in the moveset
-			foreach(GroundAttack ga in this.fighter.MoveSet){
+			foreach(GroundAttack ga in this.fighter.GroundMoveSet){
 				
 				if(ga.isSpecial && ga.orientation == orientation){
 					
@@ -139,7 +139,7 @@ public class Standing : AFighterState {
 			}
 			
 			// Find the right move in the moveset
-			foreach(Move ga in this.fighter.MoveSet){
+			foreach(Move ga in this.fighter.GroundMoveSet){
 				
 				if(ga is GroundAttack && !ga.isSpecial && ga.orientation == orientation && ((GroundAttack)ga).AttackLevel == 1){
 					

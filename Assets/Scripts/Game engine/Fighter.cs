@@ -20,7 +20,8 @@ public class Fighter : GravityEntity {
 	
 	public AFighterState State;
 	
-	public List<Move> MoveSet;
+	public List<GroundAttack> GroundMoveSet;
+	public List<AerialAttack> AerialMoveSet;
 	
 	// Fighter's hitboxes and hurtboxes
 	public List<HitBox> Hitboxes;
@@ -212,7 +213,7 @@ public class Fighter : GravityEntity {
 			// Up
 			if(i.RightStickY > 0.8){
 				
-				foreach(GroundAttack ga in this.MoveSet){
+				foreach(GroundAttack ga in this.GroundMoveSet){
 					
 					if(ga.orientation == Move.Orientation.Up){
 						

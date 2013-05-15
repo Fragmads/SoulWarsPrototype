@@ -66,11 +66,11 @@ public class OnGround : AFighterState {
 		}
 		
 		// If the fighter is knocked in the air,he go airborne
-		if(this.gameObject.GetComponent<Knocked>() != null){
+		/*if(this.gameObject.GetComponent<Knocked>() != null){
 			
 			this.GoAirborne();
 			
-		}
+		}*/
 		
 	}
 	

@@ -51,6 +51,8 @@ public class Airborne : AFighterState {
 			
 		}
 		
+		this.LastX = this.gameObject.transform.position.x;
+		this.LastY = this.gameObject.transform.position.y;
 		
 	}
 	
@@ -118,7 +120,7 @@ public class Airborne : AFighterState {
 			
 			
 			// Find the right move in the moveset
-			foreach(AerialAttack ga in this.fighter.MoveSet){
+			foreach(AerialAttack ga in this.fighter.AerialMoveSet){
 				
 				if(ga.isSpecial && ga.orientation == orientation){
 					
@@ -156,7 +158,7 @@ public class Airborne : AFighterState {
 			}
 			
 			// Find the right move in the moveset
-  			foreach(Move aa in this.fighter.MoveSet){
+  			foreach(Move aa in this.fighter.AerialMoveSet){
 				
 				if(aa is AerialAttack && !aa.isSpecial && aa.orientation == orientation){
 					
@@ -178,8 +180,10 @@ public class Airborne : AFighterState {
 	
 	void FixedUpdate() {
 		
-		// Check if the fighter as land on a platform
-		this.CheckForPlatforms();
+		// Check if the fighter as land on a platform		
+		if(this.gameObject.GetComponent<OnGround>() == null){
+			this.CheckForPlatforms();
+		}
 		
 				
 		// Latest
@@ -211,10 +215,7 @@ public class Airborne : AFighterState {
 					Landing landing = this.gameObject.AddComponent<Landing>();
 					this.fighter.State = landing;
 					this.OnGround(p);
-					
-					
-					
-					
+											
 				}
 				
 				// If you are knocked when you hit the ground and do a tech
@@ -247,6 +248,7 @@ public class Airborne : AFighterState {
 					if( downStrength < -(this.fighter.Weight * this.fighter.SplashFactor) ){
 						
 						// TODO deal damage and make the fighter rebounce
+						Debug.Log("Splash");
 						
 					}
 					// The fighter is lying on the floor
@@ -257,16 +259,14 @@ public class Airborne : AFighterState {
 						Lying lying = this.gameObject.AddComponent<Lying>();
 						this.fighter.State = lying;
 						this.OnGround(p);
-						
-						
-					}
-						
-					
+						Debug.Log("Airborne - Lying on the floor");
+												
+					}						
 					
 				}
 				
 				// You can only land on one platform
-					break;
+				break;
 				
 			}
 			
@@ -346,33 +346,37 @@ public class Airborne : AFighterState {
 	// Grab an edge
 	private void GragEdge(Edge e){
 		
-		Debug.Log("Airborne - GrabEdge");
+		// If no one is already grabbing the ledge
+		if(e.grabber == null){
 		
-		// In case of blind auto edge grab
-		if(this.fighter.isFacingLeft != e.isRight){
+			Debug.Log("Airborne - GrabEdge");
 			
-			this.fighter.TurnAround();
+			// In case of blind auto edge grab
+			if(this.fighter.isFacingLeft != e.isRight){
+				
+				this.fighter.TurnAround();
+				
+			}
 			
-		}
-		
-		// Grab the edge, it will give the fighter invicibility
-		e.EdgeGrabbed(this.fighter);
-		
-		// Stop the fighter movement
-		Momentum.Clean(this.fighter);
-		
-		this.gameObject.GetComponent<XMomentum>().strength = 0;
-		
-		this.fighter.SpeedX = 0;
-		this.fighter.SpeedY = 0;
-		
-		
-		// State goes to ledge grabbing
-		LedgeGrabbing ledgeGrabbing = this.gameObject.AddComponent<LedgeGrabbing>();
-		ledgeGrabbing.edge = e;
-		this.fighter.State = ledgeGrabbing;
-		Object.Destroy(this);
-		
+			// Grab the edge, it will give the fighter invicibility
+			e.EdgeGrabbed(this.fighter);
+			
+			// Stop the fighter movement
+			Momentum.Clean(this.fighter);
+			
+			this.gameObject.GetComponent<XMomentum>().strength = 0;
+			
+			this.fighter.SpeedX = 0;
+			this.fighter.SpeedY = 0;
+			
+			
+			// State goes to ledge grabbing
+			LedgeGrabbing ledgeGrabbing = this.gameObject.AddComponent<LedgeGrabbing>();
+			ledgeGrabbing.edge = e;
+			this.fighter.State = ledgeGrabbing;
+			GameObject.Destroy(this);
+			
+		}		
 		
 	}
 	
@@ -381,13 +385,13 @@ public class Airborne : AFighterState {
 		Debug.Log("Airborne : On the ground");
 		Debug.Log("SpeedY "+this.fighter.SpeedY);
 		
-		// You are no longer in the air, and not knocked anymore
+		// You are no longer in the air
 		OnGround onGround = this.gameObject.AddComponent<OnGround>();
 		onGround.platform = p;
-		Object.Destroy(this);
+		GameObject.Destroy(this.gameObject.GetComponent<Airborne>());
 		
 		// Reset Gravity
-		Object.Destroy(this.gameObject.GetComponent<GravityMomentum>());
+		GameObject.Destroy(this.gameObject.GetComponent<GravityMomentum>());
 		
 	}
 	

@@ -35,6 +35,10 @@ public class Attack : MonoBehaviour {
 	// List of target that this attack has hit
 	public List<AEntity> TargetHit;
 	
+	// Knock Time
+	public float BaseKnockTime = 3f;
+	public float PureKnockTime = 0;
+	
 	// Method
 	//
 	
@@ -79,6 +83,104 @@ public class Attack : MonoBehaviour {
 			// Disable the hitbox
 			hb.enabled = false;
 		}
+		
+	}
+	
+	public void ApplyAttack(AEntity e){
+		
+		
+		
+		
+	}
+	
+	public void ApplyAttack(Fighter f){
+		
+		// Hit each target once per attack max
+		if(!this.TargetHit.Contains(f)){
+			
+						
+			this.TargetHit.Add(f);
+			
+				
+			// Reduce HP
+			f.CurrentHp -= this.Damage;
+			
+			// TODO Give momentum based on damage % and stuff
+			
+			// Add a momentum to the fighter
+			Momentum hit = f.gameObject.AddComponent<Momentum>();
+			
+			// Set the angle of the momentum
+			if(this.Owner.isFacingLeft){
+				hit.angle = 180 - this.BaseKnockBack.angle;
+				
+			} 
+			else{
+				hit.angle = this.BaseKnockBack.angle;
+			}
+			
+			// 
+			hit.reduction = this.BaseKnockBack.reduction;
+								
+			
+			// KnockBack Strength formula : BaseStrength * (MissingHPPercentage)					
+			float missingHp = f.MaxHp - f.CurrentHp;
+								
+			hit.strength = (missingHp/ f.MaxHp) * this.BaseKnockBack.strength;
+			
+						
+			// Opponent is knocked
+			
+			// If the opponent is not airborne already
+			if(f.gameObject.GetComponent<Airborne>() == null){
+				
+				// If he is on the ground
+				if(f.gameObject.GetComponent<OnGround>() != null){
+										
+					OnGround og = f.gameObject.GetComponent<OnGround>();
+					// He goes airborne
+					og.GoAirborne();
+					
+				}
+				// If he is ledge grabbing
+				else if(f.gameObject.GetComponent<LedgeGrabbing>() != null){
+					
+					LedgeGrabbing lg = f.gameObject.GetComponent<LedgeGrabbing>();
+					// He goes airborne
+					lg.GoAirborne();
+					
+				}			
+			}
+			
+			// The other fighter is knocked
+			Knocked k = f.gameObject.AddComponent<Knocked>();
+			f.State = k;
+			
+			k.PureKnockTime = this.PureKnockTime;
+			
+			// Knock time formula
+			k.KnockTime = (missingHp/ f.MaxHp) * this.BaseKnockTime;
+			
+			// Stop the other fighters state
+			this.StopStates(f);
+			
+			
+			Debug.Log("Attack - ApplyAttack - Momentum Strength "+hit.strength+" knock time"+ k.KnockTime);
+			
+		}
+		
+	}
+	
+	
+	private void StopStates(Fighter f){
+		
+		// If the fighter is lying
+		if(f.gameObject.GetComponent<Lying>() != null){
+			// Stop it
+			GameObject.Destroy(f.gameObject.GetComponent<Lying>());
+		}
+		// TODO other state
+		
 		
 	}
 	

@@ -75,7 +75,8 @@ public class Attacking : AFighterState {
 				if(this.AttackLevel <4){
 				
 					// Destroy the dummy for the past attack
-					Object.Destroy(this.Attack.gameObject);
+					this.Attack.EndMove();
+					GameObject.Destroy(this.Attack.gameObject);
 					
 					// Launch an attack
 					this.LaunchAttack(input);
@@ -90,7 +91,8 @@ public class Attacking : AFighterState {
 		
 		if(this.Attack.isEnded && this.Attack != null){
 			
-			// Destroy the dummy for the attack
+			this.Attack.EndMove();
+			// Destroy the dummy for the attack			
 			Object.Destroy(this.Attack.gameObject);
 			
 			if(this.gameObject.GetComponent<OnGround>() != null){

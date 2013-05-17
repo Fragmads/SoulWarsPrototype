@@ -55,6 +55,13 @@ public class Edge : MonoBehaviour {
 			// Set it to base value
 			this.InvincibilityTime = Edge.invincibilityBaseTime;
 		} 
+		
+		if(this.grabber != null){
+			// If the ledge is not grabbed anymore
+			if(this.grabber.gameObject.GetComponent<LedgeGrabbing>() == null){
+				this.grabber = null;
+			}
+		}
 				
 	}
 	

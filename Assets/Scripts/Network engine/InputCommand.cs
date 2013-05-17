@@ -36,13 +36,13 @@ public class InputCommand : MonoBehaviour  {
 	
 	// Command are true on the first Frame of the button down
 	public bool CommandAttack = false;
-	private bool CommandAttackReleased = true;
+	protected bool CommandAttackReleased = true;
 	public bool CommandSpecial = false;
-	private bool CommandSpecialReleased = true;
+	protected bool CommandSpecialReleased = true;
 	public bool CommandGuard = false;
-	private bool CommandGuardReleased = true;
+	protected bool CommandGuardReleased = true;
 	public bool CommandJump = false;
-	private bool CommandJumpReleased = false;
+	protected bool CommandJumpReleased = false;
 	
 	
 	// When true, you will perform a LCancel when you land
@@ -51,46 +51,27 @@ public class InputCommand : MonoBehaviour  {
 	public bool TechWindow = false;
 	
 	
+	// TODO find a solution to read input on Update and not on Fixed Update (If an input is faster than a frame, it may not be read correctly)
+	
 	public void FixedUpdate(){
 		
-		// Command are only true the first frame you hit the button
-		if(this.CommandAttackReleased && this.Attack){
-			
-			this.CommandAttack = true;
-			this.CommandAttackReleased = false;
-			
-		}
-		else {
+		// Set Command attack to false if needed
+		if( !this.CommandAttackReleased || !this.Attack) {
 			this.CommandAttack = false;
 		}
 		
-		if(this.CommandSpecialReleased && this.Special){
-			
-			this.CommandSpecial = true;
-			this.CommandSpecialReleased = false;
-			
-		}
-		else {
+		
+		if (!this.CommandSpecialReleased || !this.Special) {
 			this.CommandSpecial = false;
 		}
 		
-		if(this.CommandGuardReleased && this.Guard){
-			
-			this.CommandGuard = true;
-			this.CommandGuardReleased = false;
-			
-		}
-		else {
+		
+		if (!this.CommandGuardReleased || !this.Guard) {
 			this.CommandGuard = false;
 		}
 		
-		if(this.CommandJumpReleased && this.Jump){
-			
-			this.CommandJump = true;
-			this.CommandJumpReleased = false;
-			
-		}
-		else {
+		
+		if(!this.CommandJumpReleased || !this.Jump) {
 			this.CommandJump = false;
 		}
 		

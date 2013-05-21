@@ -37,10 +37,12 @@ public class GravityEntity : AEntity {
 	// Add the gravity Momentum
 	private void AddGravityMomentum(){
 		
-		Momentum gravity = this.gameObject.AddComponent<GravityMomentum>();
+		GravityMomentum gravity = this.gameObject.AddComponent<GravityMomentum>();
 		gravity.angle = 270;
-		gravity.reduction = 0;
-		gravity.strength = this.Weight * Stage.Gravity;
+		// Reduction is acceleration for the gravity momentum
+		gravity.reduction = (this.Weight*this.Weight)*Stage.Gravity;
+		gravity.maxStrength = this.Weight * Stage.Gravity;
+		gravity.strength = 0;
 		
 	}
 	

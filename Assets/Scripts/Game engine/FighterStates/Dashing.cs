@@ -55,10 +55,10 @@ public class Dashing : AFighterState
 		
 		XMomentum groundMomentum = this.gameObject.GetComponent<XMomentum>();
 		
-		float wantedAcceleration = input.RightStickX * fighter.DashAcceleration;
+		float wantedAcceleration = input.LeftStickX * fighter.DashAcceleration;
 		
 		// If the fighter dash dance
-		if (input.RightStickDash && (Mathf.Abs (fighter.DashMaxSpeed) > Mathf.Abs (groundMomentum.strength)) && ((fighter.isFacingLeft && wantedAcceleration > 0) || (fighter.isFacingRight && wantedAcceleration < 0))) {
+		if (input.LeftStickDash && (Mathf.Abs (fighter.DashMaxSpeed) > Mathf.Abs (groundMomentum.strength)) && ((fighter.isFacingLeft && wantedAcceleration > 0) || (fighter.isFacingRight && wantedAcceleration < 0))) {
 			
 			fighter.TurnAround ();
 			

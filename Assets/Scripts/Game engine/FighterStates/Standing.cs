@@ -48,7 +48,7 @@ public class Standing : AFighterState {
 		// TODO reorganize the if else if chain, to a more logical order
 				
 		// Walking
-		if (!input.RightStickDash && input.RightStickX != 0){
+		if (!input.LeftStickDash && input.LeftStickX != 0){
 			
 			Walking walking = this.gameObject.AddComponent<Walking>();
 			this.fighter.State = walking;
@@ -56,7 +56,7 @@ public class Standing : AFighterState {
 			
 		}
 		// Dashing
-		else if(input.RightStickDash && input.RightStickX != 0){
+		else if(input.LeftStickDash && input.LeftStickX != 0){
 			
 			Dashing dashing = this.gameObject.AddComponent<Dashing>();
 			this.fighter.State = dashing;
@@ -88,13 +88,13 @@ public class Standing : AFighterState {
 			// Define the orientation of this special move
 			Move.Orientation orientation;
 			
-			if(input.RightStickY > 0.8){
+			if(input.LeftStickY > 0.8){
 				orientation = Move.Orientation.Up;
 			}
-			else if(input.RightStickY < -0.8){
+			else if(input.LeftStickY < -0.8){
 				orientation = Move.Orientation.Down;
 			}
-			else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+			else if(input.LeftStickX > 0.8 || input.LeftStickX < -0.8 ){
 				orientation = Move.Orientation.Forward;
 			}
 			else{
@@ -125,13 +125,13 @@ public class Standing : AFighterState {
 			// Define the orientation of this attack
 			Move.Orientation orientation;
 			
-			if(input.RightStickY > 0.8){
+			if(input.LeftStickY > 0.8){
 				orientation = Move.Orientation.Up;
 			}
-			else if(input.RightStickY < -0.8){
+			else if(input.LeftStickY < -0.8){
 				orientation = Move.Orientation.Down;
 			}
-			else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+			else if(input.LeftStickX > 0.8 || input.LeftStickX < -0.8 ){
 				orientation = Move.Orientation.Forward;
 			}
 			else{

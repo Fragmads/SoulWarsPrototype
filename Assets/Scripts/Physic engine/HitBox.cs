@@ -24,10 +24,6 @@ public class HitBox : MonoBehaviour {
 	// The Attack using this hitbox
 	public Attack attack;
 	
-	public int Damage;
-	
-	public Momentum KnockBack;
-	
 	// Method
 	//
 	

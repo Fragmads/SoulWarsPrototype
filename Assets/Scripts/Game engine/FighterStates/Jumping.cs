@@ -49,7 +49,7 @@ public class Jumping : AFighterState {
 			
 		}
 		
-		this.RStickX = input.RightStickX;
+		this.RStickX = input.LeftStickX;
 		
 		
 	}	

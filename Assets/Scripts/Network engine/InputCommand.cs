@@ -18,15 +18,15 @@ public class InputCommand : MonoBehaviour  {
 	//public Player Player; 
 	
 	// Input status
-	public float RightStickX = 0;
-	public float RightStickY = 0;
-	
-	public bool RightStickDash = false;
-	
 	public float LeftStickX = 0;
 	public float LeftStickY = 0;
 	
-	public bool L3 = false;
+	public bool LeftStickDash = false;
+	
+	public float RightStickX = 0;
+	public float RightStickY = 0;
+	
+	public bool R3 = false;
 	
 	// State of the button
 	public bool Attack = false;

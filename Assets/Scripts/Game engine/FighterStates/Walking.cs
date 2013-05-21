@@ -47,8 +47,8 @@ public class Walking : AFighterState {
 		XMomentum groundMomentum = this.gameObject.GetComponent<XMomentum>();
 		
 		// Walk		
-		if(!input.RightStickDash){
-			float wantedSpeed = input.RightStickX * fighter.WalkSpeed;
+		if(!input.LeftStickDash){
+			float wantedSpeed = input.LeftStickX * fighter.WalkSpeed;
 			
 			// If the fighter has to change is facing
 			if((fighter.isFacingLeft && wantedSpeed > 0 ) || (fighter.isFacingRight && wantedSpeed < 0)){
@@ -104,13 +104,13 @@ public class Walking : AFighterState {
 			// Define the orientation of this special move
 			Move.Orientation orientation;
 			
-			if(input.RightStickY > 0.8){
+			if(input.LeftStickY > 0.8){
 				orientation = Move.Orientation.Up;
 			}
-			else if(input.RightStickY < -0.8){
+			else if(input.LeftStickY < -0.8){
 				orientation = Move.Orientation.Down;
 			}
-			else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+			else if(input.LeftStickX > 0.8 || input.LeftStickX < -0.8 ){
 				orientation = Move.Orientation.Forward;
 			}
 			else{
@@ -142,13 +142,13 @@ public class Walking : AFighterState {
 			// Define the orientation of this attack
 			Move.Orientation orientation;
 			
-			if(input.RightStickY > 0.8){
+			if(input.LeftStickY > 0.8){
 				orientation = Move.Orientation.Up;
 			}
-			else if(input.RightStickY < -0.8){
+			else if(input.LeftStickY < -0.8){
 				orientation = Move.Orientation.Down;
 			}
-			else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+			else if(input.LeftStickX > 0.8 || input.LeftStickX < -0.8 ){
 				orientation = Move.Orientation.Forward;
 			}
 			else{

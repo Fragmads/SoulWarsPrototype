@@ -19,6 +19,8 @@ public class Knocked : AFighterState {
 	public float KnockTime;
 	public float PureKnockTime;
 	
+	public KnockBack knockBack;
+	
 	private float LastRStickX = 0;
 	
 	public bool isInTechWindow =false;
@@ -54,10 +56,10 @@ public class Knocked : AFighterState {
 		this.isInTechWindow = input.TechWindow;
 		
 		// If the player destun
-		if( this.PureKnockTime <= 0 && (((this.LastRStickX > 0.9) && (input.RightStickX < -0.9)) || ((this.LastRStickX < -0.9) && (input.RightStickX > 0.9))) ){
+		if( this.PureKnockTime <= 0 && (((this.LastRStickX > 0.9) && (input.LeftStickX < -0.9)) || ((this.LastRStickX < -0.9) && (input.LeftStickX > 0.9))) ){
 			
 			this.KnockTime -= Knocked.DestunFactor;
-			this.LastRStickX = input.RightStickX;
+			this.LastRStickX = input.LeftStickX;
 			
 		}
 		
@@ -69,13 +71,26 @@ public class Knocked : AFighterState {
 		this.KnockTime -= Time.deltaTime;
 		this.PureKnockTime -= Time.deltaTime;
 		
-		
+		// If there is no more KnockTime
 		if(this.KnockTime < 0){
-			
-			this.KnockTime = 0;
-			this.PureKnockTime = 0;
-			Object.Destroy(this);
-			
+			// You are not Knocked anymore
+			this.EndKnocked();			
+		}
+		
+	}
+	
+	public void EndKnocked(){
+		
+		this.KnockTime = 0;
+		this.PureKnockTime = 0;
+		GameObject.Destroy(this.knockBack);
+		// TODO transform the remaining KnockBack into a Momentum
+		GameObject.Destroy(this);
+		
+		// If you are airborne when the knockBack End
+		if(this.fighter.gameObject.GetComponent<Airborne>() != null){
+			// Play the airborne animation
+			this.gameObject.animation.Play("airborne");		
 		}
 		
 	}

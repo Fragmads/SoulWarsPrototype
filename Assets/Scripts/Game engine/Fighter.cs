@@ -164,19 +164,19 @@ public class Fighter : GravityEntity {
 		if(i.CommandSpecial){
 			
 			// Up
-			if(i.RightStickY > 0.8){
+			if(i.LeftStickY > 0.8){
 				
 				
 				return true;
 			}
 			// Down
-			else if(i.RightStickY < -0.8){
+			else if(i.LeftStickY < -0.8){
 				
 				
 				return true;
 			}
 			// Forward
-			else if(i.RightStickX > 0.8 || i.RightStickX < -0.8){
+			else if(i.LeftStickX > 0.8 || i.LeftStickX < -0.8){
 				
 				
 				return true;
@@ -211,7 +211,7 @@ public class Fighter : GravityEntity {
 		if(i.Attack){
 		
 			// Up
-			if(i.RightStickY > 0.8){
+			if(i.LeftStickY > 0.8){
 				
 				foreach(GroundAttack ga in this.GroundMoveSet){
 					
@@ -224,11 +224,11 @@ public class Fighter : GravityEntity {
 				
 			}
 			// Down
-			else if(i.RightStickY < -0.8){
+			else if(i.LeftStickY < -0.8){
 				
 			}
 			// Forward
-			else if(i.RightStickX > 0.8 || i.RightStickX < -0.8){
+			else if(i.LeftStickX > 0.8 || i.LeftStickX < -0.8){
 				
 			}
 			// Neutral

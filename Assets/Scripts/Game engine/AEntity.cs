@@ -23,8 +23,14 @@ public abstract class AEntity : MonoBehaviour {
 	
 	public void FixedUpdate(){
 		
-		// Calculate applied momentum
-		this.ApplyMomentum();
+		// If the entity don't get any knockback
+		if(this.gameObject.GetComponent<KnockBack>() == null){
+			// Calculate applied momentum
+			this.ApplyMomentum();
+		}
+		else {
+			this.ApplyKnockBack();
+		}
 		
 		
 		// Move the entity to it's new position
@@ -41,10 +47,22 @@ public abstract class AEntity : MonoBehaviour {
 		// For every momentum attached to this entity
 		foreach (Momentum m in this.gameObject.GetComponents<Momentum>()){
 			
-			// Add the strength
-			x += m.vector.x;
-			y += m.vector.y;
-			
+			// In the case of the gravity
+			if(m is GravityMomentum){
+				
+				// You apply it only if the entity is not jumping
+				if(this.gameObject.GetComponent<JumpMomentum>() == null){
+					// Add the strength
+					x += m.vector.x;
+					y += m.vector.y;
+				}
+				
+			}
+			else {
+				// Add the strength
+				x += m.vector.x;
+				y += m.vector.y;
+			}
 		}
 		
 		// Apply it to the actual speed of the entity
@@ -54,5 +72,25 @@ public abstract class AEntity : MonoBehaviour {
 		
 	}
 	
+	public void ApplyKnockBack(){
+		
+		float x = 0;
+		float y = 0;
+		
+		// For every momentum attached to this entity
+		foreach (KnockBack k in this.gameObject.GetComponents<KnockBack>()){
+						
+			// Add the strength
+			x += k.vector.x;
+			y += k.vector.y;
+			
+		}
+		
+		// Apply it to the actual speed of the entity
+		
+		this.SpeedX = x;
+		this.SpeedY = y;
+		
+	}
 	
 }

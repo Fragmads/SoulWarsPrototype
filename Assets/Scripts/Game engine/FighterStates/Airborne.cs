@@ -90,7 +90,7 @@ public class Airborne : AFighterState {
 		
 			
 			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
-			xMom.strength = this.fighter.DoubleJumpHorizontalFactor * input.RightStickX;
+			xMom.strength = this.fighter.DoubleJumpHorizontalFactor * input.LeftStickX;
 					
 		}
 		
@@ -105,13 +105,13 @@ public class Airborne : AFighterState {
 			// Define the orientation of this special move
 			Move.Orientation orientation;
 			
-			if(input.RightStickY > 0.8){
+			if(input.LeftStickY > 0.8){
 				orientation = Move.Orientation.Up;
 			}
-			else if(input.RightStickY < -0.8){
+			else if(input.LeftStickY < -0.8){
 				orientation = Move.Orientation.Down;
 			}
-			else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+			else if(input.LeftStickX > 0.8 || input.LeftStickX < -0.8 ){
 				orientation = Move.Orientation.Forward;
 			}
 			else{
@@ -141,16 +141,16 @@ public class Airborne : AFighterState {
 			// Define the orientation of this attack
 			Move.Orientation orientation;
 			
-			if(input.RightStickY > 0.8){
+			if(input.LeftStickY > 0.8){
 				orientation = Move.Orientation.Up;
 			}
-			else if(input.RightStickY < -0.8){
+			else if(input.LeftStickY < -0.8){
 				orientation = Move.Orientation.Down;
 			}
-			else if((this.fighter.isFacingRight && input.RightStickX > 0.8) || (this.fighter.isFacingLeft && input.RightStickX < -0.8) ){
+			else if((this.fighter.isFacingRight && input.LeftStickX > 0.8) || (this.fighter.isFacingLeft && input.LeftStickX < -0.8) ){
 				orientation = Move.Orientation.Forward;
 			}
-			else if((this.fighter.isFacingLeft && input.RightStickX > 0.8) || (this.fighter.isFacingRight && input.RightStickX < -0.8)){
+			else if((this.fighter.isFacingLeft && input.LeftStickX > 0.8) || (this.fighter.isFacingRight && input.LeftStickX < -0.8)){
 				orientation = Move.Orientation.Back;
 			}
 			else{
@@ -406,7 +406,7 @@ public class Airborne : AFighterState {
 			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
 			
 			// Acceleration toward the X speed
-			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.RightStickX;
+			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.LeftStickX;
 			
 			// Cap the X speed
 			if(xMom.strength > this.fighter.JumpBackHorizontalFactor){
@@ -422,7 +422,7 @@ public class Airborne : AFighterState {
 			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
 			
 			// Acceleration toward the X speed
-			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.RightStickX;
+			xMom.strength += (this.fighter.AirControlHorizontalSpeed/60) * input.LeftStickX;
 			
 			// Cap the X speed
 			if(xMom.strength < -this.fighter.JumpBackHorizontalFactor){
@@ -436,21 +436,21 @@ public class Airborne : AFighterState {
 		
 		// Fast Fall
 		// If you are not jumping, not fast falling and your stick is down, Start Fast Fall
-		if(this.gameObject.GetComponent<JumpMomentum>() == null && !this.FastFalling && input.RightStickY < - 0.8){						
+		if(this.gameObject.GetComponent<JumpMomentum>() == null && !this.FastFalling && input.LeftStickY < - 0.8){						
 			this.FastFalling = true;
 			
 			// Double the gravity effect
 			GravityMomentum gm = this.gameObject.GetComponent<GravityMomentum>();
-			gm.strength = gm.strength * 2;
+			gm.maxStrength = gm.maxStrength * 2;
 			
 		}
 		// If you are fast falling and your stick is not down, End Fast Fall
-		else if(this.gameObject.GetComponent<JumpMomentum>() == null && (this.FastFalling && input.RightStickY >= -0.8)){			
+		else if(this.gameObject.GetComponent<JumpMomentum>() == null && (this.FastFalling && input.LeftStickY >= -0.8)){			
 			this.FastFalling = false;
 			
 			// Gravity effect divised by 2
 			GravityMomentum gm = this.gameObject.GetComponent<GravityMomentum>();
-			gm.strength = gm.strength / 2;
+			gm.maxStrength = gm.maxStrength / 2;
 			
 			
 		}

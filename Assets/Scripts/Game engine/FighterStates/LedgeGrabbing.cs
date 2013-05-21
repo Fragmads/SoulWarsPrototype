@@ -34,6 +34,20 @@ public class LedgeGrabbing : AFighterState {
 			
 		}
 		
+		// Be sure that the fighter is not on airborne or onGround state
+		if(this.fighter.gameObject.GetComponent<Airborne>() != null){
+			GameObject.Destroy(this.fighter.gameObject.GetComponent<Airborne>());
+		}
+		
+		if(this.fighter.gameObject.GetComponent<OnGround>() != null){
+			GameObject.Destroy(this.fighter.gameObject.GetComponent<OnGround>());
+		}
+		
+		// Prevent the fighter from moving once he is grabbing the ledge
+		if(this.fighter.gameObject.GetComponent<XMomentum>() != null){
+			this.fighter.gameObject.GetComponent<XMomentum>().strength = 0;
+		}
+		
 		// play the ledgeGrab animation
 		this.gameObject.animation.Play("ledgeGrab", PlayMode.StopAll);
 		
@@ -49,7 +63,7 @@ public class LedgeGrabbing : AFighterState {
 		// TODO dropping the ledge, jumping from it, rolling in, standing, rising attacks
 		
 		// If ledge drop
-		if(input.RightStickY < -0.5f){
+		if(input.LeftStickY < -0.5f){
 			
 			this.GoAirborne();
 			
@@ -83,7 +97,7 @@ public class LedgeGrabbing : AFighterState {
 		}
 		
 		// If Standing on ledge
-		if(input.RightStickY > 0.5){
+		if(input.LeftStickY > 0.5){
 			
 			// You are now considered to be on the ground
 			OnGround onGround = this.gameObject.AddComponent<OnGround>();

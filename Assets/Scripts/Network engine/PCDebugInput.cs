@@ -25,25 +25,25 @@ public class PCDebugInput : InputCommand {
 		// RStick = zqsd (azerty keyboard)
 		if(Input.GetKey(KeyCode.Q)){
 			
-			this.RightStickX = -this.RStickCoef;
+			this.LeftStickX = -this.RStickCoef;
 			
 		}
 		else if(Input.GetKey(KeyCode.D)){
 			
-			this.RightStickX = this.RStickCoef;
+			this.LeftStickX = this.RStickCoef;
 		}
 		else {			
-			this.RightStickX = 0;			
+			this.LeftStickX = 0;			
 		}
 			
 		if(Input.GetKey(KeyCode.Z)){
-			this.RightStickY = this.RStickCoef;
+			this.LeftStickY = this.RStickCoef;
 		}
 		else if(Input.GetKey(KeyCode.S)){
-			this.RightStickY = -this.RStickCoef;
+			this.LeftStickY = -this.RStickCoef;
 		}
 		else {			
-			this.RightStickY = 0;			
+			this.LeftStickY = 0;			
 		}
 		
 		// Attack : H, Special : G, Guard : Y, Jump : J
@@ -53,6 +53,7 @@ public class PCDebugInput : InputCommand {
 		this.Guard = Input.GetKey(KeyCode.Y);
 		this.Jump = Input.GetKey(KeyCode.J);
 		
+		this.LeftStickDash = Input.GetKey(KeyCode.E);
 		
 		// Command Input
 		

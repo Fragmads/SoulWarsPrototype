@@ -22,7 +22,7 @@ public class Attack : MonoBehaviour {
 	public int StartFrame;
 	public int EndFrame;
 	
-	public Momentum BaseKnockBack;
+	public KnockBack BaseKnockBack;
 	
 	public Fighter Owner;
 	
@@ -62,8 +62,6 @@ public class Attack : MonoBehaviour {
 					//Debug.Log("Attack - StartAttack : add hitbox to "+hb.BoneName);
 					hb.enabled = true;
 					hb.attack = this;
-					hb.Damage = this.Damage;
-					hb.KnockBack = this.BaseKnockBack;
 					hb.Owner = this.Owner;
 					
 				}			
@@ -108,27 +106,27 @@ public class Attack : MonoBehaviour {
 			// TODO Give momentum based on damage % and stuff
 			
 			// Add a momentum to the fighter
-			Momentum hit = f.gameObject.AddComponent<Momentum>();
+			KnockBack kb = f.gameObject.AddComponent<KnockBack>();
 			
 			// Set the angle of the momentum
 			if(this.Owner.isFacingLeft){
-				hit.angle = 180 - this.BaseKnockBack.angle;
+				kb.angle = 180 - this.BaseKnockBack.angle;
 				
 			} 
 			else{
-				hit.angle = this.BaseKnockBack.angle;
+				kb.angle = this.BaseKnockBack.angle;
 			}
 			
 			// 
-			hit.reduction = this.BaseKnockBack.reduction;
+			//kb.reduction = this.BaseKnockBack.reduction;
 								
 			
 			// KnockBack Strength formula : BaseStrength * (MissingHPPercentage)					
 			float missingHp = f.MaxHp - f.CurrentHp;
 								
-			hit.strength = (missingHp/ f.MaxHp) * this.BaseKnockBack.strength;
+			kb.strength = (missingHp/ f.MaxHp) * this.BaseKnockBack.strength;
 			
-						
+			
 			// Opponent is knocked
 			
 			// If the opponent is not airborne already
@@ -160,12 +158,13 @@ public class Attack : MonoBehaviour {
 			
 			// Knock time formula
 			k.KnockTime = (missingHp/ f.MaxHp) * this.BaseKnockTime;
+			kb.length = k.KnockTime;
 			
 			// Stop the other fighters state
 			this.StopStates(f);
 			
 			
-			Debug.Log("Attack - ApplyAttack - Momentum Strength "+hit.strength+" knock time"+ k.KnockTime);
+			Debug.Log("Attack - ApplyAttack - Momentum Strength "+kb.strength+" knock time"+ k.KnockTime);
 			
 		}
 		

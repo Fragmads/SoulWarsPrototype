@@ -66,13 +66,13 @@ public class Teching : AFighterState {
 				this.fighter.InvincibilityTime = Teching.invincibleTimeTech;
 				
 				//If the player roll to the right
-				if(input.RightStickX > 0.8){
+				if(input.LeftStickX > 0.8){
 					
 					// TODO perform a right dodge
 										
 				}
 				// If the player roll to the left
-				else if(input.RightStickX < -0.8){
+				else if(input.LeftStickX < -0.8){
 					
 					// TODO perform a left dodge
 					

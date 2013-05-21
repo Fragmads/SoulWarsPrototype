@@ -127,13 +127,13 @@ public class Attacking : AFighterState {
 		// Define the orientation of this attack
 		Move.Orientation orientation;
 		
-		if(input.RightStickY > 0.8){
+		if(input.LeftStickY > 0.8){
 			orientation = Move.Orientation.Up;
 		}
-		else if(input.RightStickY < -0.8){
+		else if(input.LeftStickY < -0.8){
 			orientation = Move.Orientation.Down;
 		}
-		else if(input.RightStickX > 0.8 || input.RightStickX < -0.8 ){
+		else if(input.LeftStickX > 0.8 || input.LeftStickX < -0.8 ){
 			orientation = Move.Orientation.Forward;
 		}
 		else{

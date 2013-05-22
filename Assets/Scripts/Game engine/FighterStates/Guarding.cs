@@ -15,6 +15,8 @@ public class Guarding : AFighterState {
 	// Method
 	//
 	
+	public float GuardLag = 0;
+	
 	
 	public new void Start(){
 		
@@ -70,5 +72,30 @@ public class Guarding : AFighterState {
 		
 	}
 	
+	public void GuardBreak(){
+		
+		this.fighter.GuardLife = this.fighter.GuardInitLife/2;
+		
+	}
+	
+	public void GuardHit (Attack attack){
+		
+		// Reduce the guard
+		this.fighter.GuardLife -= attack.Damage;
+		
+		// Take reduced damage		
+		this.fighter.CurrentHp -= Mathf.FloorToInt((attack.Damage * this.fighter.GuardLife)/ this.fighter.GuardInitLife);
+		
+		// If the guard break
+		if(this.fighter.GuardLife <=0){
+			
+			this.GuardBreak();
+			
+		}
+		
+		// TODO add guard DI
+		
+		
+	}
 	
 }

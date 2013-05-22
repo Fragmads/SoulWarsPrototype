@@ -96,76 +96,85 @@ public class Attack : MonoBehaviour {
 		// Hit each target once per attack max
 		if(!this.TargetHit.Contains(f)){
 			
-						
-			this.TargetHit.Add(f);
-			
+			// If the opponent is guarding
+			if(f.gameObject.GetComponent<Guarding>() != null){
 				
-			// Reduce HP
-			f.CurrentHp -= this.Damage;
-			
-			// TODO Give momentum based on damage % and stuff
-			
-			// Add a momentum to the fighter
-			KnockBack kb = f.gameObject.AddComponent<KnockBack>();
-			
-			// Set the angle of the momentum
-			if(this.Owner.isFacingLeft){
-				kb.angle = 180 - this.BaseKnockBack.angle;
+				Guarding guard = f.gameObject.GetComponent<Guarding>();
 				
-			} 
-			else{
-				kb.angle = this.BaseKnockBack.angle;
-			}
-			
-			// 
-			//kb.reduction = this.BaseKnockBack.reduction;
-								
-			
-			// KnockBack Strength formula : BaseStrength * (MissingHPPercentage)					
-			float missingHp = f.MaxHp - f.CurrentHp;
-								
-			kb.strength = (missingHp/ f.MaxHp) * this.BaseKnockBack.strength;
-			
-			
-			// Opponent is knocked
-			
-			// If the opponent is not airborne already
-			if(f.gameObject.GetComponent<Airborne>() == null){
 				
-				// If he is on the ground
-				if(f.gameObject.GetComponent<OnGround>() != null){
-										
-					OnGround og = f.gameObject.GetComponent<OnGround>();
-					// He goes airborne
-					og.GoAirborne();
+				
+			}	
+			// else, the opponent take the hit
+			else {
+				this.TargetHit.Add(f);
+				
 					
+				// Reduce HP
+				f.CurrentHp -= this.Damage;
+				
+				// TODO Give momentum based on damage % and stuff
+				
+				// Add a momentum to the fighter
+				KnockBack kb = f.gameObject.AddComponent<KnockBack>();
+				
+				// Set the angle of the momentum
+				if(this.Owner.isFacingLeft){
+					kb.angle = 180 - this.BaseKnockBack.angle;
+					
+				} 
+				else{
+					kb.angle = this.BaseKnockBack.angle;
 				}
-				// If he is ledge grabbing
-				else if(f.gameObject.GetComponent<LedgeGrabbing>() != null){
+				
+				// 
+				//kb.reduction = this.BaseKnockBack.reduction;
+									
+				
+				// KnockBack Strength formula : BaseStrength * (MissingHPPercentage)					
+				float missingHp = f.MaxHp - f.CurrentHp;
+									
+				kb.strength = (missingHp/ f.MaxHp) * this.BaseKnockBack.strength;
+				
+				
+				// Opponent is knocked
+				
+				// If the opponent is not airborne already
+				if(f.gameObject.GetComponent<Airborne>() == null){
 					
-					LedgeGrabbing lg = f.gameObject.GetComponent<LedgeGrabbing>();
-					// He goes airborne
-					lg.GoAirborne();
-					
-				}			
+					// If he is on the ground
+					if(f.gameObject.GetComponent<OnGround>() != null){
+											
+						OnGround og = f.gameObject.GetComponent<OnGround>();
+						// He goes airborne
+						og.GoAirborne();
+						
+					}
+					// If he is ledge grabbing
+					else if(f.gameObject.GetComponent<LedgeGrabbing>() != null){
+						
+						LedgeGrabbing lg = f.gameObject.GetComponent<LedgeGrabbing>();
+						// He goes airborne
+						lg.GoAirborne();
+						
+					}			
+				}
+				
+				// The other fighter is knocked
+				Knocked k = f.gameObject.AddComponent<Knocked>();
+				f.State = k;
+				
+				k.PureKnockTime = this.PureKnockTime;
+				
+				// Knock time formula
+				k.KnockTime = (missingHp/ f.MaxHp) * this.BaseKnockTime;
+				kb.length = k.KnockTime;
+				
+				// Stop the other fighters state
+				this.StopStates(f);
+				
+				
+				Debug.Log("Attack - ApplyAttack - Momentum Strength "+kb.strength+" knock time"+ k.KnockTime);
 			}
-			
-			// The other fighter is knocked
-			Knocked k = f.gameObject.AddComponent<Knocked>();
-			f.State = k;
-			
-			k.PureKnockTime = this.PureKnockTime;
-			
-			// Knock time formula
-			k.KnockTime = (missingHp/ f.MaxHp) * this.BaseKnockTime;
-			kb.length = k.KnockTime;
-			
-			// Stop the other fighters state
-			this.StopStates(f);
-			
-			
-			Debug.Log("Attack - ApplyAttack - Momentum Strength "+kb.strength+" knock time"+ k.KnockTime);
-			
 		}
 		
 	}

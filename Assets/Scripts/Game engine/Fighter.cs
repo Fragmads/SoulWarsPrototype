@@ -98,6 +98,7 @@ public class Fighter : GravityEntity {
 	// Guard
 	public float GuardInitLife = 100f;
 	public float GuardLife;
+	public float GuardGrow = 5f;
 
 	
 	
@@ -142,6 +143,23 @@ public class Fighter : GravityEntity {
 			// Read the commands from the player		
 			this.State.readCommand(this.Player.InputCommand);		
 		}
+		
+		
+		// If the fighter has a damaged guard
+		if(this.GuardLife < this.GuardInitLife){
+			
+			// Increase the guard life
+			this.GuardLife += this.GuardGrow/60;
+			
+			// The regen end, and the guard jauge is full
+			if(this.GuardLife >= this.GuardInitLife){
+				this.GuardLife = this.GuardInitLife;
+			}
+			
+			
+		}
+		
+		
 		
 	}
 	

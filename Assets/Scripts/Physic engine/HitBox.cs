@@ -40,7 +40,7 @@ public class HitBox : MonoBehaviour {
 	public void OnTriggerEnter(Collider other){
 		
 		// If this hitboxes touched an HurtBox that isn't one of the owner
-		if(this.enabled && other.gameObject.GetComponent<HurtBox>()!= null && !other.gameObject.GetComponent<HurtBox>().Owner.Equals(this.Owner)){
+		if(this.enabled && this.attack != null && this.attack.gameObject != null && other.gameObject.GetComponent<HurtBox>()!= null && !other.gameObject.GetComponent<HurtBox>().Owner.Equals(this.Owner)){
 			
 			this.attack.ApplyAttack(other.gameObject.GetComponent<HurtBox>().Owner);		
 				

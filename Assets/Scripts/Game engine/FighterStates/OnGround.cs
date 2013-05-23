@@ -83,17 +83,20 @@ public class OnGround : AFighterState {
 		
 		// If you are not on a platform anymore, you can't be in those state
 		if(this.gameObject.GetComponent<Standing>() != null){
-			Object.Destroy(this.gameObject.GetComponent<Standing>());
+			GameObject.Destroy(this.gameObject.GetComponent<Standing>());
 		}
 		if(this.gameObject.GetComponent<Walking>() != null){
-			Object.Destroy(this.gameObject.GetComponent<Walking>());
+			GameObject.Destroy(this.gameObject.GetComponent<Walking>());
 		}
 		if(this.gameObject.GetComponent<Dashing>() != null){
-			Object.Destroy(this.gameObject.GetComponent<Dashing>());
+			GameObject.Destroy(this.gameObject.GetComponent<Dashing>());
+		}
+		if(this.gameObject.GetComponent<Guarding>() != null){
+			GameObject.Destroy(this.gameObject.GetComponent<Guarding>());
 		}
 		
 		
-		Object.Destroy(this);
+		GameObject.Destroy(this);
 		
 		
 	}

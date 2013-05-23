@@ -63,9 +63,9 @@ public class Airborne : AFighterState {
 	
 	// Read the command send by the player, and interpret them
 	public override void readCommand (InputCommand input ){
-		// TODO air attack, air dodge, air control
+		// TODO air dodge
 		
-		
+		//Debug.Log("Airborne readCommand fighter : "+this.fighter.gameObject.name);
 		
 		// Double jumping
 		if(input.CommandJump && this.JumpLeft > 0 && this.gameObject.GetComponent<Jumping>() == null ){

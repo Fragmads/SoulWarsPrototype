@@ -96,17 +96,21 @@ public class Attack : MonoBehaviour {
 		// Hit each target once per attack max
 		if(!this.TargetHit.Contains(f)){
 			
+			this.TargetHit.Add(f);
+			
 			// If the opponent is guarding
 			if(f.gameObject.GetComponent<Guarding>() != null){
 				
+				Debug.Log("Attack - Hit Guard");
+				
 				Guarding guard = f.gameObject.GetComponent<Guarding>();
 				
-				
+				guard.GuardHit(this);
 				
 			}	
 			// else, the opponent take the hit
 			else {
-				this.TargetHit.Add(f);
+				
 				
 					
 				// Reduce HP

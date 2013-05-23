@@ -17,7 +17,6 @@ public class Guarding : AFighterState {
 	
 	public float GuardLag = 0;
 	
-	
 	public new void Start(){
 		
 		base.Start();
@@ -36,22 +35,25 @@ public class Guarding : AFighterState {
 	public override void readCommand (InputCommand input ){
 		// TODO can grab, jump, dodge, or go back to standing
 		
-		// Guard to stand
-		if(!input.Guard){
+		// No input if you are in Guard Lag
+		if(this.GuardLag <= 0){
+			// Guard to stand
+			if(!input.Guard){
+				
+				// He stand without guard
+				this.fighter.State = this.gameObject.AddComponent<Standing>();
+				
+				Object.Destroy(this);
+				
+			}
 			
-			// He stand without guard
-			this.fighter.State = this.gameObject.AddComponent<Standing>();
-			
-			Object.Destroy(this);
-			
-		}
-		
-		if(input.CommandJump){
-			
-			Jumping jumping = this.gameObject.AddComponent<Jumping>();
-			this.fighter.State = jumping;
-			Object.Destroy(this);
-			
+			if(input.CommandJump){
+				
+				Jumping jumping = this.gameObject.AddComponent<Jumping>();
+				this.fighter.State = jumping;
+				Object.Destroy(this);
+				
+			}
 		}
 		
 	}	
@@ -70,18 +72,43 @@ public class Guarding : AFighterState {
 			
 		}
 		
+		// Reduce Guard lag if there is
+		if(this.GuardLag > 0){
+			
+			this.GuardLag -= Time.fixedDeltaTime;
+			
+			if(this.GuardLag <= 0){
+				this.GuardLag = 0;
+			}
+			
+		}
+		
 	}
 	
 	public void GuardBreak(){
 		
+		Debug.Log("Guarding GuardBreak");
 		this.fighter.GuardLife = this.fighter.GuardInitLife/2;
 		
 	}
 	
 	public void GuardHit (Attack attack){
 		
+				
 		// Reduce the guard
 		this.fighter.GuardLife -= attack.Damage;
+		
+		this.GuardLag += attack.Damage/60f;
+		Debug.Log("Guarding GuardHit - GuardLag "+this.GuardLag);
+		
+		// If you are not facing the attacker
+		if( (this.fighter.isFacingLeft && attack.Owner.gameObject.transform.position.x > this.fighter.gameObject.transform.position.x) ||
+			(this.fighter.isFacingRight && attack.Owner.gameObject.transform.position.x < this.fighter.gameObject.transform.position.x)){
+			
+			// You turn around
+			this.fighter.TurnAround();
+			
+		}
 		
 		// Take reduced damage		
 		this.fighter.CurrentHp -= Mathf.FloorToInt((attack.Damage * this.fighter.GuardLife)/ this.fighter.GuardInitLife);
@@ -95,6 +122,21 @@ public class Guarding : AFighterState {
 		
 		// TODO add guard DI
 		
+		// Add a momentum to the fighter guarding
+		Momentum m = this.fighter.gameObject.AddComponent<Momentum>();
+		
+		// Set the strength and reduction
+		m.strength = attack.BaseKnockBack.strength / 3f;
+		m.reduction = this.fighter.Weight;
+		
+		// the angle depend on which side he is looking (he has already turn around if needed)
+		if(this.fighter.isFacingLeft){
+			m.angle = 0;
+		}
+		else {
+			m.angle = 180;
+		}
+				
 		
 	}
 	

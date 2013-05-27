@@ -100,6 +100,14 @@ public class Fighter : GravityEntity {
 	public float GuardLife;
 	public float GuardGrow = 5f;
 
+	// Edge grab height adjustment
+	public float MinEdgeGrabHeight = 0.5f;
+	public float MaxEdgeGrabHeight = 1f;
+	
+	// Spot dodge
+	public float SpotDodgeLength = 1f;
+	public float SpotDodgeStart = 0.3f;
+	public float SpotDodgeEnd = 0.8f;
 	
 	
 	// Method

@@ -17,6 +17,8 @@ public class LedgeGrabbing : AFighterState {
 	// Method
 	//
 	
+	private int firstFrame = 0;
+	
 	public new void Start(){
 		
 		base.Start();
@@ -42,8 +44,10 @@ public class LedgeGrabbing : AFighterState {
 		if(this.fighter.gameObject.GetComponent<OnGround>() != null){
 			GameObject.Destroy(this.fighter.gameObject.GetComponent<OnGround>());
 		}
+				
 		
 		// Prevent the fighter from moving once he is grabbing the ledge
+		Momentum.Clean(this.fighter);
 		if(this.fighter.gameObject.GetComponent<XMomentum>() != null){
 			this.fighter.gameObject.GetComponent<XMomentum>().strength = 0;
 		}
@@ -60,64 +64,72 @@ public class LedgeGrabbing : AFighterState {
 	
 	// Read the command send by the player, and interpret them
 	public override void readCommand (InputCommand input ){
-		// TODO dropping the ledge, jumping from it, rolling in, standing, rising attacks
 		
-		// If ledge drop
-		if(input.LeftStickY < -0.5f){
-			
-			this.GoAirborne();
-			
-			Vector3 newPos = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y - Edge.grabDistanceY, 0);
-			this.gameObject.transform.position = newPos;
-			
+		// No input is processed on the first frames you grab a ledge
+		if(this.firstFrame < 0){
+			this.firstFrame ++;
 		}
+		else{
 		
-		// If ledge jump
-		if(input.CommandJump){
+			// TODO dropping the ledge, jumping from it, rolling in, standing, rising attacks
 			
-			// You are now considered to be on the ground
-			OnGround onGround = this.gameObject.AddComponent<OnGround>();
-			onGround.platform = this.edge.platform;
-			
-			// Translate the entity so it doesn't fall of the platform right away
-			Vector3 newPos;
-			if(this.edge.isLeft){
-				newPos = new Vector3(this.gameObject.transform.position.x + 0.1f, this.gameObject.transform.position.y, 0);
+			// If ledge drop
+			if(input.LeftStickY < -0.5f){
+				
+				this.GoAirborne();
+				
+				Vector3 newPos = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y - (this.fighter.MaxEdgeGrabHeight +0.01f), 0);
+				this.gameObject.transform.position = newPos;
+				
 			}
-			else {
-				newPos = new Vector3(this.gameObject.transform.position.x - 0.1f, this.gameObject.transform.position.y, 0);
+			
+			// If ledge jump
+			if(input.CommandJump){
+				
+				// You are now considered to be on the ground
+				OnGround onGround = this.gameObject.AddComponent<OnGround>();
+				onGround.platform = this.edge.platform;
+				
+				// Translate the entity so it doesn't fall of the platform right away
+				Vector3 newPos;
+				if(this.edge.isLeft){
+					newPos = new Vector3(this.gameObject.transform.position.x + 0.1f, this.gameObject.transform.position.y, 0);
+				}
+				else {
+					newPos = new Vector3(this.gameObject.transform.position.x - 0.1f, this.gameObject.transform.position.y, 0);
+				}
+				this.gameObject.transform.position = newPos;
+				
+				// Start Jumping
+				Jumping jumping = this.gameObject.AddComponent<Jumping>();
+				this.fighter.State = jumping;
+				Object.Destroy(this);
+				
 			}
-			this.gameObject.transform.position = newPos;
 			
-			// Start Jumping
-			Jumping jumping = this.gameObject.AddComponent<Jumping>();
-			this.fighter.State = jumping;
-			Object.Destroy(this);
-			
-		}
-		
-		// If Standing on ledge
-		if(input.LeftStickY > 0.5){
-			
-			// You are now considered to be on the ground
-			OnGround onGround = this.gameObject.AddComponent<OnGround>();
-			onGround.platform = this.edge.platform;
-			
-			// Translate the entity so it doesn't fall of the platform right away
-			Vector3 newPos;
-			if(this.edge.isLeft){
-				newPos = new Vector3(this.edge.gameObject.transform.position.x + 0.1f, this.edge.gameObject.transform.position.y, 0);
+			// If Standing on ledge
+			if(input.LeftStickY > 0.5){
+				
+				// You are now considered to be on the ground
+				OnGround onGround = this.gameObject.AddComponent<OnGround>();
+				onGround.platform = this.edge.platform;
+				
+				// Translate the entity so it doesn't fall of the platform right away
+				Vector3 newPos;
+				if(this.edge.isLeft){
+					newPos = new Vector3(this.edge.gameObject.transform.position.x + 0.1f, this.edge.gameObject.transform.position.y, 0);
+				}
+				else {
+					newPos = new Vector3(this.edge.gameObject.transform.position.x - 0.1f, this.edge.gameObject.transform.position.y, 0);
+				}
+				this.gameObject.transform.position = newPos;
+				
+				// Standing
+				Standing standing = this.gameObject.AddComponent<Standing>();
+				this.fighter.State = standing;
+				Object.Destroy(this);
+				
 			}
-			else {
-				newPos = new Vector3(this.edge.gameObject.transform.position.x - 0.1f, this.edge.gameObject.transform.position.y, 0);
-			}
-			this.gameObject.transform.position = newPos;
-			
-			// Standing
-			Standing standing = this.gameObject.AddComponent<Standing>();
-			this.fighter.State = standing;
-			Object.Destroy(this);
-			
 		}
 		
 	}	

@@ -94,7 +94,7 @@ public class Attack : MonoBehaviour {
 	public void ApplyAttack(Fighter f){
 		
 		// Hit each target once per attack max
-		if(!this.TargetHit.Contains(f)){
+		if(!this.TargetHit.Contains(f) && f.InvincibilityTime <=0 ){
 			
 			this.TargetHit.Add(f);
 			

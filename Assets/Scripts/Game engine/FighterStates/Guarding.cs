@@ -47,6 +47,7 @@ public class Guarding : AFighterState {
 				
 			}
 			
+			// Jump out of guard
 			if(input.CommandJump){
 				
 				Jumping jumping = this.gameObject.AddComponent<Jumping>();
@@ -54,6 +55,16 @@ public class Guarding : AFighterState {
 				Object.Destroy(this);
 				
 			}
+			
+			// Spot dodge if the stick is held down
+			if(input.LeftStickY < -0.8f){
+				
+				SpotDodging spotDodging = this.fighter.gameObject.AddComponent<SpotDodging>();
+				this.fighter.State = spotDodging;
+				GameObject.Destroy(this);
+				
+			}
+			
 		}
 		
 	}	

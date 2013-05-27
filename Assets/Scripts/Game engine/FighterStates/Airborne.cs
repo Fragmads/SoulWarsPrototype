@@ -272,71 +272,73 @@ public class Airborne : AFighterState {
 			
 			
 			// Ledge grab
+			// If the fighte can ledge grab
+			if(this.fighter.gameObject.GetComponent<JumpMomentum>() == null){
 			
-			float fighterEdgeY;
-			float fighterEdgeX;
-			
-			if(p.LeftEdge != null){
-				fighterEdgeY = this.gameObject.transform.position.y - p.LeftEdge.gameObject.transform.position.y;
-				fighterEdgeX = this.gameObject.transform.position.x - p.LeftEdge.gameObject.transform.position.x;
+				float fighterEdgeY;
+				float fighterEdgeX;
 				
-				//If you can reach the left edge
-				if( ((fighterEdgeY < 0) && (fighterEdgeY > -Edge.grabDistanceY)) && ((fighterEdgeX < 0) && (fighterEdgeX > -Edge.grabDistanceX)) ){
+				if(p.LeftEdge != null){
+					fighterEdgeY = (this.gameObject.transform.position.y + this.fighter.MinEdgeGrabHeight ) - p.LeftEdge.gameObject.transform.position.y;
+					fighterEdgeX = this.gameObject.transform.position.x - p.LeftEdge.gameObject.transform.position.x;
 					
-					
-					
-					Attacking attacking = this.gameObject.GetComponent<Attacking>();
-					// If the fighter is not attacking
-					if( attacking == null){
+					//If you can reach the left edge
+					if( ((fighterEdgeY < 0) && (fighterEdgeY > -(this.fighter.MaxEdgeGrabHeight - this.fighter.MinEdgeGrabHeight))) && ((fighterEdgeX < 0) && (fighterEdgeX > -Edge.grabDistanceX)) ){
 						
-						if( this.fighter.isFacingRight ){
+												
+						Attacking attacking = this.gameObject.GetComponent<Attacking>();
+						// If the fighter is not attacking
+						if( attacking == null){
+							
+							if( this.fighter.isFacingRight ){
+								
+								this.GragEdge(p.LeftEdge);
+							} 
+							
+						}
+						// If he can grab the ledge
+						else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingRight)){
 							
 							this.GragEdge(p.LeftEdge);
-						} 
+							
+						}
+						
+						// You can only grab one ledge at once
+						break;
 						
 					}
-					// If he can grab the ledge
-					else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingRight)){
-						
-						this.GragEdge(p.LeftEdge);
-						
-					}
-					
-					// You can only grab one ledge at once
-					break;
-					
+									
 				}
-								
-			}
-			
-			if (p.RightEdge != null){
-				fighterEdgeY = this.gameObject.transform.position.y - p.RightEdge.gameObject.transform.position.y;
-				fighterEdgeX = this.gameObject.transform.position.x - p.RightEdge.gameObject.transform.position.x;
 				
-				if(((fighterEdgeY < 0) && (fighterEdgeY > -Edge.grabDistanceY)) && ((fighterEdgeX > 0) && (fighterEdgeX < Edge.grabDistanceX))){
+				if (p.RightEdge != null){
+					fighterEdgeY = (this.gameObject.transform.position.y + this.fighter.MinEdgeGrabHeight ) - p.LeftEdge.gameObject.transform.position.y;
+					fighterEdgeX = this.gameObject.transform.position.x - p.RightEdge.gameObject.transform.position.x;
 					
-					Attacking attacking = this.gameObject.GetComponent<Attacking>();
-					// If the fighter is not attacking
-					if( attacking == null){
+					if( ((fighterEdgeY < 0) && (fighterEdgeY > -(this.fighter.MaxEdgeGrabHeight - this.fighter.MinEdgeGrabHeight) )) && ((fighterEdgeX > 0) && (fighterEdgeX < Edge.grabDistanceX))){
 						
-						if( this.fighter.isFacingLeft ){
+						Attacking attacking = this.gameObject.GetComponent<Attacking>();
+						// If the fighter is not attacking
+						if( attacking == null){
+							
+							if( this.fighter.isFacingLeft ){
+								
+								this.GragEdge(p.RightEdge);
+							} 
+							
+						}
+						// If he can grab the ledge
+						else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingLeft)){
 							
 							this.GragEdge(p.RightEdge);
-						} 
+							
+						}
+						
+						// You can only grab one ledge at once
+						break;
 						
 					}
-					// If he can grab the ledge
-					else if (attacking.Attack.BlindAutoEdgeGrab || (attacking.Attack.AutoEdgeGrab && this.fighter.isFacingLeft)){
-						
-						this.GragEdge(p.RightEdge);
-						
-					}
-					
-					// You can only grab one ledge at once
-					break;
 					
 				}
-				
 			}
 			
 		}

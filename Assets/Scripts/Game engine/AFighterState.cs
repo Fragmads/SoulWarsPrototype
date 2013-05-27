@@ -28,12 +28,7 @@ public abstract class AFighterState : MonoBehaviour {
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
 	
-						
-		
-	}
 	
 	// Send the name of the current state
 	public abstract string getStateName();

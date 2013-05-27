@@ -18,8 +18,7 @@ public class Edge : MonoBehaviour {
 	public Platform platform;
 	
 	// General distance from where you can grab an edge
-	public static float grabDistanceY = 0.5f;
-	public static float grabDistanceX = 5.0f;
+	public static float grabDistanceX = 1f;
 	
 	// Invicibility time
 	private static float invincibilityBaseTime = 1f ;

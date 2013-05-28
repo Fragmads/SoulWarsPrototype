@@ -148,7 +148,7 @@ public class Standing : AFighterState {
 					this.fighter.State = attacking;
 					attacking.Attack = ga;
 					attacking.AttackLevel = 1;
-					Object.Destroy(this);
+					GameObject.Destroy(this);
 					
 					break;
 					

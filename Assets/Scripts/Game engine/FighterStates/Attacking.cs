@@ -48,18 +48,15 @@ public class Attacking : AFighterState {
 	
 	// Read the command send by the player, and interpret them
 	public override void readCommand (InputCommand input ){
-		
-		// TODO go to next attack, Air control
-				
+						
 		// If this attack is not a special and is performed on the ground
 		if(!this.Attack.isSpecial && this.Attack is GroundAttack){
-			
-			
+						
 			// If the player want to repeat/spam this level of attack
 			if(this.Attack.isEnded && input.Attack && this.AttackLevel < 3){
 				
 				// Destroy the dummy for the past attack
-				Object.Destroy(this.Attack.gameObject);
+				GameObject.Destroy(this.Attack.gameObject);
 				
 				// Launch an attack
 				this.LaunchAttack(input);			
@@ -91,15 +88,14 @@ public class Attacking : AFighterState {
 		
 		if(this.Attack.isEnded && this.Attack != null){
 			
-			this.Attack.EndMove();
 			// Destroy the dummy for the attack			
-			Object.Destroy(this.Attack.gameObject);
+			this.StopAttacking();
 			
 			if(this.gameObject.GetComponent<OnGround>() != null){
 				
 				// TODO stand
 				this.fighter.State = this.gameObject.AddComponent<Standing>();
-				Object.Destroy(this);
+				GameObject.Destroy(this);
 				
 			}
 			
@@ -107,7 +103,7 @@ public class Attacking : AFighterState {
 				
 				// TODO airborne				
 				this.fighter.State = this.gameObject.GetComponent<Airborne>();
-				Object.Destroy(this);				
+				GameObject.Destroy(this);				
 				
 			}
 			
@@ -162,7 +158,17 @@ public class Attacking : AFighterState {
 			}
 			
 		}
+				
+	}
+	
+	
+	public void StopAttacking(){
 		
+		// Destroy the dummy for the past attack
+		if(this.Attack != null && !this.Attack.Equals(this.Attack.Prefab)){
+			this.Attack.EndMove();
+			GameObject.Destroy(this.Attack.gameObject);
+		}
 		
 	}
 	

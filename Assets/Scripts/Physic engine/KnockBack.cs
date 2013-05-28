@@ -32,14 +32,18 @@ public class KnockBack : MonoBehaviour {
 	// Update is called once per frame
 	public void FixedUpdate () {
 		
-		// Reduce the time since this KnockBack exist
-		this.length -= Time.fixedDeltaTime;
+		// If this Knockback is not in a move dummy
+		if(this.gameObject.GetComponent<Move>() == null){
 		
-		// If the Knockback end
-		if(this.length <= 0){
+			// Reduce the time since this KnockBack exist
+			this.length -= Time.fixedDeltaTime;
 			
-			GameObject.Destroy(this);
-			
+			// If the Knockback end
+			if(this.length <= 0){
+				
+				GameObject.Destroy(this);
+				
+			}
 		}
 		
 	}

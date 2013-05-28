@@ -163,6 +163,12 @@ public class Attack : MonoBehaviour {
 					}			
 				}
 				
+				// Stop the other fighters state
+				this.StopStates(f);
+				
+				// The other fighter goes airborne
+				f.gameObject.AddComponent<Airborne>();
+				
 				// The other fighter is knocked
 				Knocked k = f.gameObject.AddComponent<Knocked>();
 				f.State = k;
@@ -173,8 +179,9 @@ public class Attack : MonoBehaviour {
 				k.KnockTime = (missingHp/ f.MaxHp) * this.BaseKnockTime;
 				kb.length = k.KnockTime;
 				
-				// Stop the other fighters state
-				this.StopStates(f);
+				
+				
+				// TODO Crouch Cancelling
 				
 				
 				Debug.Log("Attack - ApplyAttack - Momentum Strength "+kb.strength+" knock time"+ k.KnockTime);
@@ -191,9 +198,25 @@ public class Attack : MonoBehaviour {
 			// Stop it
 			GameObject.Destroy(f.gameObject.GetComponent<Lying>());
 		}
+		
+		if(f.gameObject.GetComponent<Attacking>() != null){
+			
+			// Stop the attack
+			f.gameObject.GetComponent<Attacking>().StopAttacking();
+				
+			// Stop the fighter from attacking
+			GameObject.Destroy(f.gameObject.GetComponent<Attacking>());
+			
+		}
+		
+		// Clean all other state
+		foreach(AFighterState state in f.gameObject.GetComponents<AFighterState>()){
+			
+			GameObject.Destroy(state);
+			
+		}
+		
 		// TODO other state
-		
-		
 	}
 	
 }

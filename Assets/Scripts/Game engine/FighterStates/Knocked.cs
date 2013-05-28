@@ -89,6 +89,9 @@ public class Knocked : AFighterState {
 		
 		// If you are airborne when the knockBack End
 		if(this.fighter.gameObject.GetComponent<Airborne>() != null){
+			
+			this.fighter.State = this.fighter.gameObject.GetComponent<Airborne>();
+			
 			// Play the airborne animation
 			this.gameObject.animation.Play("airborne");		
 		}

@@ -23,13 +23,15 @@ public class Landing : AFighterState {
 		
 		base.Start();
 		
+		// Check if the fighter landing was attacking
 		Attacking attacking = this.gameObject.GetComponent<Attacking>();
 		
 		if (attacking != null && attacking.Attack is AerialAttack){
 			
 			this.LandingLag = ((AerialAttack)attacking.Attack).LandingLag;
 			
-			GameObject.Destroy(attacking.Attack.gameObject);
+			// Stop the aerial attack
+			attacking.StopAttacking();
 			
 			GameObject.Destroy(attacking);
 			// TODO : Check if a LCancel was performed

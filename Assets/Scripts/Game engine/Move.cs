@@ -47,6 +47,9 @@ public class Move : MonoBehaviour {
 	// Owner of this move
 	public Fighter Owner;
 	
+	
+	private int cleanFrame = 0;
+	
 	// Method
 	//
 	
@@ -77,6 +80,20 @@ public class Move : MonoBehaviour {
 			
 		} 
 		
+		// Destroy the move if it is ended
+		if(this.isEnded){
+			
+			this.cleanFrame ++;
+			
+			if(this.cleanFrame > 2){
+				
+				GameObject.Destroy(this.gameObject);
+				
+			}
+			
+		}
+		
+		
 	}
 	
 	
@@ -95,7 +112,7 @@ public class Move : MonoBehaviour {
 		
 		
 		// Destroy the game object attached to this move
-		//Object.Destroy(this.gameObject);
+		//GameObject.Destroy(this.gameObject);
 		
 	}
 	

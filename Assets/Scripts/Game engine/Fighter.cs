@@ -43,7 +43,9 @@ public class Fighter : GravityEntity {
 				
 				Debug.Log("Fighter - Mort");
 				// TODO
-				// Trigger death
+				// Trigger death				
+				this.Player.LooseLife();
+				
 			}		
 		}		
 	}
@@ -109,6 +111,11 @@ public class Fighter : GravityEntity {
 	public float SpotDodgeStart = 0.3f;
 	public float SpotDodgeEnd = 0.8f;
 	
+	// Air Dodge
+	public float AirDodgeLength = 1f;
+	public float AirDodgeStart = 0.2f;
+	public float AirDodgeEnd = 0.8f;
+	public float AirDodgeStrength = 1f;
 	
 	// Method
 	//

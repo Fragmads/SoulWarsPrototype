@@ -65,7 +65,7 @@ public class Walking : AFighterState {
 				
 				Standing state = this.gameObject.AddComponent<Standing>();
 				this.fighter.State = state;
-				Object.Destroy(this);
+				GameObject.Destroy(this);
 				
 			}
 		}
@@ -74,7 +74,7 @@ public class Walking : AFighterState {
 			
 			Dashing dashing = this.gameObject.AddComponent<Dashing>();
 			this.fighter.State = dashing;
-			Object.Destroy(this);
+			GameObject.Destroy(this);
 		}
 		
 		// Jumping
@@ -82,7 +82,7 @@ public class Walking : AFighterState {
 			
 			Jumping jumping = this.gameObject.AddComponent<Jumping>();
 			this.fighter.State = jumping;
-			Object.Destroy(this);
+			GameObject.Destroy(this);
 			
 		}
 		
@@ -91,7 +91,7 @@ public class Walking : AFighterState {
 			
 			Guarding guarding = this.gameObject.AddComponent<Guarding>();
 			this.fighter.State = guarding;
-			Object.Destroy(this);
+			GameObject.Destroy(this);
 			
 			XMomentum xMom = this.gameObject.GetComponent<XMomentum>();
 			xMom.strength = 0;
@@ -126,7 +126,7 @@ public class Walking : AFighterState {
 					Attacking attacking = this.gameObject.AddComponent<Attacking>();
 					this.fighter.State = attacking;
 					attacking.Attack = ga;
-					Object.Destroy(this);
+					GameObject.Destroy(this);
 					
 					break;
 					
@@ -165,7 +165,7 @@ public class Walking : AFighterState {
 					this.fighter.State = attacking;
 					attacking.Attack = ga;
 					attacking.AttackLevel = 1;
-					Object.Destroy(this);
+					GameObject.Destroy(this);
 					
 					break;
 					

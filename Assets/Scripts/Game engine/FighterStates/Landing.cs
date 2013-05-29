@@ -39,13 +39,27 @@ public class Landing : AFighterState {
 			
 			
 		}
-		
+						
 		this.gameObject.GetComponent<XMomentum>().strength = 0;
 		
 		
 		// play the landing animation
 		this.gameObject.animation.Play("landing", PlayMode.StopAll);
 		
+		
+		// Destroy previous state		
+		foreach(AFighterState af in this.fighter.gameObject.GetComponents<AFighterState>()){
+			
+			// Except for this current one, landing, and OnGround
+			if(!(af is Landing) && !(af is OnGround)){
+				
+				GameObject.Destroy(af);
+				
+			}
+			
+		}
+		// Be sure that the actual state of the fighter is landing
+		this.fighter.State = this;
 		
 	}
 	

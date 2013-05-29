@@ -18,15 +18,17 @@ public class Match : MonoBehaviour {
 				
 	public List<Player> Players;
 	
+	
 	public bool UseTimer= true;
 	
 	public bool Running = false;
 	
 	
-	private float timeLeft= 420; // 420 sec =  4 min
+	private float timeLeft = 840; // 840 sec =  8 min
 	
 	private enum GameStatus { Start, Running, Paused, End };
 	private GameStatus Status;
+		
 	
 	// Method
 	//

@@ -17,6 +17,9 @@ public class Stage : MonoBehaviour {
 	public GameObject Platforms;
 	public float StageGravity = 1;
 	
+	// Object grouping the SpawnPoint of this stage
+	public GameObject SpawnPoints;
+	
 	private static float gravity = 1;
 	public static float Gravity  {
 		get {return Stage.gravity;}
@@ -28,12 +31,10 @@ public class Stage : MonoBehaviour {
 		// Initialize the platforms of this stage
 		Platform.StagePlatforms =new List<Platform>( this.Platforms.GetComponentsInChildren<Platform>());
 		
+		SpawnPoint.StageSpawnPoint =new List<SpawnPoint>( this.SpawnPoints.GetComponentsInChildren<SpawnPoint>());
+		
 		Stage.gravity = this.StageGravity;
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

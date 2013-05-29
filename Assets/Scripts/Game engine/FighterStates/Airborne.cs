@@ -63,7 +63,20 @@ public class Airborne : AFighterState {
 	
 	// Read the command send by the player, and interpret them
 	public override void readCommand (InputCommand input ){
-		// TODO air dodge
+		
+		// Air Dodge
+		if(input.CommandGuard){
+			
+			AirDodging airDodging = this.fighter.gameObject.AddComponent<AirDodging>();
+			this.fighter.State = airDodging;
+			
+			// Set up the Air Dodge direction
+			airDodging.DirectionX = input.LeftStickX;
+			airDodging.DirectionY = input.LeftStickY;
+			
+			
+			
+		}
 		
 		//Debug.Log("Airborne readCommand fighter : "+this.fighter.gameObject.name);
 		

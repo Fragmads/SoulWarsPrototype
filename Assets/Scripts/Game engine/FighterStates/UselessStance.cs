@@ -3,7 +3,7 @@
 // Package : Game engine/FighterStates
 // Last modification date : 04/09/2012
 //
-// UselessStance : A state describing a fighter fallinf after an aerial special. He can influence his direction, but not attack or dodge.
+// UselessStance : A state describing a fighter falling after an aerial special. He can influence his direction, but not attack or dodge.
 // 
 // State : Uncomplete
 
@@ -11,15 +11,25 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UselessStance : MonoBehaviour {
+public class UselessStance : AFighterState {
 
-	// Use this for initialization
-	void Start () {
 	
+	// Send the name of this state
+	public override string getStateName() {
+		return "UselessStance";
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	// Read the command send by the player, and interpret them
+	public override void readCommand (InputCommand input){
+		
+		// You can only AirControl in UselessStance
+		if(this.fighter.gameObject.GetComponent<Airborne>() != null){
+			
+			this.fighter.gameObject.GetComponent<Airborne>().AirControl(input);
+			
+		}		
+		
+		
 	}
+	
 }

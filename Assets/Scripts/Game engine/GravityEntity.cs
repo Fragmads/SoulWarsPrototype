@@ -24,8 +24,8 @@ public class GravityEntity : AEntity {
 		
 		base.FixedUpdate();
 		
-		// If the entity has no momentum attached
-		if(this.gameObject.GetComponent<GravityMomentum>() == null){
+		// If the entity has no momentum attached, and is not in a state where it is not affected by gravity
+		if(this.gameObject.GetComponent<GravityMomentum>() == null && this.gameObject.GetComponent<AirDodging>() == null){
 			
 			// Be sure that it don't ignore gravity
 			this.AddGravityMomentum();

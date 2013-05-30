@@ -93,6 +93,9 @@ public class OnGround : AFighterState {
 		}
 		if(this.gameObject.GetComponent<Guarding>() != null){
 			GameObject.Destroy(this.gameObject.GetComponent<Guarding>());
+		}		
+		if(this.gameObject.GetComponent<WaveLanding>() != null){
+			GameObject.Destroy(this.gameObject.GetComponent<WaveLanding>());
 		}
 		
 		

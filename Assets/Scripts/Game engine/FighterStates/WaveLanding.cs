@@ -11,11 +11,7 @@ using UnityEngine;
 using System.Collections;
 
 public class WaveLanding : AFighterState {
-	
-	// Side of the WaveLand
-	public bool isLeft;
-	public bool isRight;
-	
+		
 	// Remaining strength of the WaveLand
 	public float strength;
 	
@@ -48,6 +44,9 @@ public class WaveLanding : AFighterState {
 			GameObject.Destroy(this);
 			
 		}
+					
+		this.fighter.gameObject.GetComponent<XMomentum>().strength = this.strength;
+			
 		
 	}
 	

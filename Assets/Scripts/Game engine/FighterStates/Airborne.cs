@@ -215,12 +215,12 @@ public class Airborne : AFighterState {
 			
 			// Check if this fighter has landed
 			if (p.CheckIfLanded(this.fighter, this.LastX, this.LastY)){
-				Debug.Log("Airborne - fighter landing to a platform");
+//				Debug.Log("Airborne - fighter landing to a platform");
 				// Set the fighter height to the platform's
 				this.fighter.gameObject.transform.position = new Vector3( this.fighter.gameObject.transform.position.x, p.gameObject.transform.position.y , 0);
 				
-				// If you are not knocked while you hit the ground
-				if(this.gameObject.GetComponent<Knocked>() == null){
+				// If you are not knocked while you hit the ground, and you are not in an AirDodge
+				if(this.gameObject.GetComponent<Knocked>() == null && this.fighter.gameObject.GetComponent<AirDodging>() == null){
 					
 					// Stop the fighter from falling
 					//this.fighter.SpeedY = 0;
@@ -228,7 +228,34 @@ public class Airborne : AFighterState {
 					Landing landing = this.gameObject.AddComponent<Landing>();
 					this.fighter.State = landing;
 					this.OnGround(p);
+					
 											
+				}
+				// If you are performing an AirDodge
+				else if(this.fighter.gameObject.GetComponent<AirDodging>() != null){
+					
+					AirDodging airDodge = this.GetComponent<AirDodging>();
+					
+					// You are now performing a WaveLand
+					WaveLanding waveLanding = this.fighter.gameObject.AddComponent<WaveLanding>();
+					this.fighter.State = waveLanding;
+					
+					// strength of the WaveLand
+					waveLanding.strength = Mathf.Cos(airDodge.Angle * Mathf.Deg2Rad)* airDodge.Strength;
+										
+					// Length of the WaveLand
+					waveLanding.length = airDodge.RemainingTime;
+					
+					
+					// Destroy the AirDodge
+					GameObject.Destroy(airDodge);
+					
+					// You are now on the ground
+					this.OnGround (p);
+					
+					Debug.Log("Airborne.CheckForPlatforms - Start WaveLanding - Length "+waveLanding.length);
+					
+					
 				}
 				
 				// If you are knocked when you hit the ground and do a tech
@@ -241,7 +268,7 @@ public class Airborne : AFighterState {
 					Teching teching = this.gameObject.AddComponent<Teching>();
 					this.fighter.State = teching;
 					
-					Object.Destroy(this.gameObject.GetComponent<Knocked>());
+					GameObject.Destroy(this.gameObject.GetComponent<Knocked>());
 					this.OnGround(p);
 					
 					

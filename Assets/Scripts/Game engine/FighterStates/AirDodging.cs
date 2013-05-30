@@ -27,13 +27,26 @@ public class AirDodging : AFighterState {
 	public float EndInvincibilityTime = 0.8f;
 	
 	
-	// Method
-	//
-	
 	private float angle;
 	private float strength;
 	
+	public float Angle{
+		get{ return this.angle;}
+	}
+	
+	public float Strength{
+		get{return this.strength;}
+	}
+	
 	private float timeSinceStart = 0f;
+	
+	public float RemainingTime{
+		get{ return (this.length - this.timeSinceStart); }
+	}
+	
+	// Method
+	//
+	
 	
 	public new void Start(){
 		
@@ -50,7 +63,7 @@ public class AirDodging : AFighterState {
 			
 		}
 		
-		// Cap the strength of the vector to 1
+		// Cap the strength of the input to 1
 		this.strength = Mathf.Min(Vector2.Distance(Vector2.zero, point), 1f) * this.fighter.AirDodgeStrength;
 		
 		// Set up the air dodge
@@ -110,8 +123,7 @@ public class AirDodging : AFighterState {
 		}
 		
 		
-		// Move the fighter in the direction
-		
+		// Move the fighter in the direction		
 		
 		Vector3 newPos = new Vector3(this.fighter.gameObject.transform.position.x + ((Mathf.Cos(this.angle* Mathf.Deg2Rad)*this.strength)/60) , this.fighter.gameObject.transform.position.y + ((Mathf.Sin(this.angle * Mathf.Deg2Rad)*this.strength)/60),0);
 		this.fighter.gameObject.transform.position = newPos;

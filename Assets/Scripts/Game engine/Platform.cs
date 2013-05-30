@@ -75,7 +75,7 @@ public class Platform : MonoBehaviour {
 			
 			if((entity.gameObject.transform.position.x <= (this.gameObject.transform.position.x + this.Length/2)) && (entity.gameObject.transform.position.x >= (this.gameObject.transform.position.x - this.Length/2)) ) {
 			
-				Debug.Log("Platform.CheckIfLanded : Landing");
+//				Debug.Log("Platform.CheckIfLanded : Landing");
 				
 				return true;
 			}

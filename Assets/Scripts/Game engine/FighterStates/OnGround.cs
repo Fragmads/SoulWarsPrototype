@@ -104,4 +104,22 @@ public class OnGround : AFighterState {
 		
 	}
 	
+	// If the fighter want to try dropping from the platform
+	public void DropPlatform(){
+		
+		// If the platform you are on allow this
+		if(this.platform.CanDrop){
+			
+			// Go Airborne
+			this.GoAirborne();
+			
+			// Move the fighter just a little under the platform
+			Vector3 newPos = new Vector3 (this.fighter.gameObject.transform.position.x, this.fighter.gameObject.transform.position.y - 0.01f ,0);
+			this.fighter.gameObject.transform.position = newPos;
+			
+		}
+		
+	}
+	
+	
 }

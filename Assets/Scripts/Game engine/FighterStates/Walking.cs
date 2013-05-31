@@ -175,6 +175,14 @@ public class Walking : AFighterState {
 			
 		}
 		
+		// Dropping from the platform
+		else if(input.LeftStickY < -0.8f && input.LeftStickDash && this.fighter.gameObject.GetComponent<OnGround>() != null){
+			
+			// Try to drop from the platform
+			this.fighter.gameObject.GetComponent<OnGround>().DropPlatform();
+			
+		}
+		
 		
 	}
 	

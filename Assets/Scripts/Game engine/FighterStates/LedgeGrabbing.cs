@@ -1,9 +1,9 @@
-// Move.cs
+// LedgeGrabbing.cs
 // Author : Fragmads
-// Package : Game engine
+// Package : Game engine/FighterStates
 // Last modification date : 03/09/2012
 //
-// Move : A move that can be executed by a fighter
+// LedgeGrabbing : A states describing a fighter hang to a ledge
 // 
 // State : Uncomplete
 
@@ -22,20 +22,7 @@ public class LedgeGrabbing : AFighterState {
 	public new void Start(){
 		
 		base.Start();
-		
-		// Place the fighter at the ledge position		
-		if(this.edge.isLeft){
-			
-			Vector3 newPos = new Vector3(this.edge.gameObject.transform.position.x -0.1f, this.edge.gameObject.transform.position.y, 0);
-			this.gameObject.transform.position = newPos;
-		}
-		else if (this.edge.isRight) {
-			
-			Vector3 newPos = new Vector3(this.edge.gameObject.transform.position.x +0.1f, this.edge.gameObject.transform.position.y, 0);
-			this.gameObject.transform.position = newPos;
-			
-		}
-		
+				
 		// Be sure that the fighter is not on airborne or onGround state
 		if(this.fighter.gameObject.GetComponent<Airborne>() != null){
 			GameObject.Destroy(this.fighter.gameObject.GetComponent<Airborne>());
@@ -43,6 +30,10 @@ public class LedgeGrabbing : AFighterState {
 		
 		if(this.fighter.gameObject.GetComponent<OnGround>() != null){
 			GameObject.Destroy(this.fighter.gameObject.GetComponent<OnGround>());
+		}
+		
+		if(this.fighter.gameObject.GetComponent<UselessStance>() != null){
+			GameObject.Destroy(this.fighter.gameObject.GetComponent<UselessStance>());			
 		}
 				
 		
@@ -137,8 +128,21 @@ public class LedgeGrabbing : AFighterState {
 	public void FixedUpdate(){
 		
 		// Prevent the fighter from falling under the platform
-		this.gameObject.transform.position = new Vector3 (this.gameObject.transform.position.x, this.edge.gameObject.transform.position.y, 0 );
+		//this.gameObject.transform.position = new Vector3 (this.gameObject.transform.position.x, this.edge.gameObject.transform.position.y, 0 );
 		this.fighter.SpeedY = 0;
+		
+		// Place the fighter at the ledge position		
+		if(this.edge.isLeft){
+			
+			Vector3 newPos = new Vector3(this.edge.gameObject.transform.position.x -0.1f, this.edge.gameObject.transform.position.y, 0);
+			this.gameObject.transform.position = newPos;
+		}
+		else if (this.edge.isRight) {
+			
+			Vector3 newPos = new Vector3(this.edge.gameObject.transform.position.x +0.1f, this.edge.gameObject.transform.position.y, 0);
+			this.gameObject.transform.position = newPos;
+			
+		}
 		
 	}
 	

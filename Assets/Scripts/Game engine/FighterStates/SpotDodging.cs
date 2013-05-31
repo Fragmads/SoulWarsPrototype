@@ -1,9 +1,9 @@
-// Dodging.cs
+// SpotDodging.cs
 // Author : Fragmads
 // Package : Game engine/FighterStates
 // Last modification date : 03/09/2012
 //
-// Dodging : A state describing a fighter dodging attacks
+// SpotDodging : A state describing a fighter dodging attacks
 // 
 // State : Uncomplete
 

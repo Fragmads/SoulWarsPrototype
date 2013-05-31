@@ -117,6 +117,13 @@ public class Fighter : GravityEntity {
 	public float AirDodgeEnd = 0.8f;
 	public float AirDodgeStrength = 1f;
 	
+	// Rolling dodge
+	public float RollLength = 1f;
+	public float RollSpeed = 2f;
+	public float RollInvincibilityStart = 0.3f;
+	public float RollInvincibilityEnd = 0.8f;
+	
+	
 	// Method
 	//
 	

@@ -28,7 +28,7 @@ public class Attack : MonoBehaviour {
 	
 	// List of the hiboxes this attack will use
 	public List<string> HitboxName;
-	private List<HitBox> HitBox = new List<HitBox>();
+	protected List<HitBox> HitBox = new List<HitBox>();
 	
 	
 	
@@ -191,7 +191,7 @@ public class Attack : MonoBehaviour {
 	}
 	
 	
-	private void StopStates(Fighter f){
+	protected void StopStates(Fighter f){
 		
 		// If the fighter is lying
 		if(f.gameObject.GetComponent<Lying>() != null){

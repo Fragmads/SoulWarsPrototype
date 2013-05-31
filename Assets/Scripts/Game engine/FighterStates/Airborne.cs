@@ -214,7 +214,7 @@ public class Airborne : AFighterState {
 		foreach(Platform p in Platform.StagePlatforms){
 			
 			// Check if this fighter has landed
-			if (p.CheckIfLanded(this.fighter, this.LastX, this.LastY)){
+			if (p.CheckIfLanded(this.fighter, this.LastX, this.LastY) && !(p.CanDrop && this.FastFalling) ){
 //				Debug.Log("Airborne - fighter landing to a platform");
 				// Set the fighter height to the platform's
 				this.fighter.gameObject.transform.position = new Vector3( this.fighter.gameObject.transform.position.x, p.gameObject.transform.position.y , 0);
@@ -312,8 +312,8 @@ public class Airborne : AFighterState {
 			
 			
 			// Ledge grab
-			// If the fighte can ledge grab
-			if(this.fighter.gameObject.GetComponent<JumpMomentum>() == null){
+			// If the fighter can ledge grab
+			if(this.fighter.gameObject.GetComponent<JumpMomentum>() == null && !this.FastFalling){
 			
 				float fighterEdgeY;
 				float fighterEdgeX;
@@ -477,8 +477,8 @@ public class Airborne : AFighterState {
 		}
 		
 		// Fast Fall
-		// If you are not jumping, not fast falling and your stick is down, Start Fast Fall
-		if(this.gameObject.GetComponent<JumpMomentum>() == null && !this.FastFalling && input.LeftStickY < - 0.8){						
+		// If you are not jumping, not air dodging not fast falling and your stick is down, Start Fast Fall
+		if(this.gameObject.GetComponent<JumpMomentum>() == null && this.gameObject.GetComponent<AirDodging>() == null && !this.FastFalling && input.LeftStickY < - 0.8){						
 			this.FastFalling = true;
 			
 			// Double the gravity effect
@@ -487,7 +487,7 @@ public class Airborne : AFighterState {
 			
 		}
 		// If you are fast falling and your stick is not down, End Fast Fall
-		else if(this.gameObject.GetComponent<JumpMomentum>() == null && (this.FastFalling && input.LeftStickY >= -0.8)){			
+		else if(this.FastFalling && (this.gameObject.GetComponent<JumpMomentum>() != null || this.gameObject.GetComponent<AirDodging>() != null || input.LeftStickY >= -0.8)){			
 			this.FastFalling = false;
 			
 			// Gravity effect divised by 2

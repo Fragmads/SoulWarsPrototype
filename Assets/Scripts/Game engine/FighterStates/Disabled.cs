@@ -12,12 +12,26 @@ using System.Collections;
 
 public class Disabled : AFighterState {
 	
-	private static float StuckBug = 10;
+	private static float StuckBug = 10f;
 	
 	private float disabledTime = 0;
 	
 	// Method
 	//
+	
+	public new void Start(){
+		
+		base.Start();
+		
+		// Clean all previous State
+		foreach(AFighterState af in this.fighter.gameObject.GetComponents<AFighterState>()){
+			
+			if(! (af is Disabled)){
+				GameObject.Destroy(af);
+			}			
+		}
+		
+	}
 	
 	// Send the name of this state
 	public override string getStateName() {
@@ -37,7 +51,9 @@ public class Disabled : AFighterState {
 		// In case of stuck bug
 		if(this.disabledTime > Disabled.StuckBug ){
 			
-			// TODO solution
+			// Add a life, and kill this player
+			this.fighter.Player.LifeRemaining ++;
+			this.fighter.Player.LooseLife();
 			
 		}
 		

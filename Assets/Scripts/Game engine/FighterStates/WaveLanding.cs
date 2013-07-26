@@ -23,6 +23,16 @@ public class WaveLanding : AFighterState {
 		return "WaveLanding";
 	}
 	
+	
+	new void Start(){
+		
+		base.Start();
+		
+		// play the landing animation
+		this.gameObject.animation.Play("landing", PlayMode.StopAll);
+		
+	}
+	
 	// Read the command send by the player, and interpret them
 	public override void readCommand (InputCommand input ){
 		

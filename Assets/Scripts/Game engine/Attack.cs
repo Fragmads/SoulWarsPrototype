@@ -179,7 +179,7 @@ public class Attack : MonoBehaviour {
 				k.KnockTime = (missingHp/ f.MaxHp) * this.BaseKnockTime;
 				kb.length = k.KnockTime;
 				
-				
+				k.knockBack = kb;
 				
 				// TODO Crouch Cancelling
 				

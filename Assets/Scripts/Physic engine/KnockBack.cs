@@ -21,6 +21,9 @@ public class KnockBack : MonoBehaviour {
 	// Length of the knockback, in second
 	public float length;
 	
+	// DI Factor
+	public float DIFactor = 10f;
+	
 	
 	public Vector2 vector = new Vector2(0,0);
 	

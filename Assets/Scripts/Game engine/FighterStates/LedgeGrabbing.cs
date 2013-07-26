@@ -35,7 +35,11 @@ public class LedgeGrabbing : AFighterState {
 		if(this.fighter.gameObject.GetComponent<UselessStance>() != null){
 			GameObject.Destroy(this.fighter.gameObject.GetComponent<UselessStance>());			
 		}
-				
+			
+		if(this.fighter.gameObject.GetComponent<AirDodging>() != null){
+			GameObject.Destroy(this.fighter.gameObject.GetComponent<AirDodging>());			
+		}
+		
 		
 		// Prevent the fighter from moving once he is grabbing the ledge
 		Momentum.Clean(this.fighter);

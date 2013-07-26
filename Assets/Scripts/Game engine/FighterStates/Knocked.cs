@@ -53,6 +53,32 @@ public class Knocked : AFighterState {
 	public override void readCommand (InputCommand input ){
 		// TODO DI's, 
 		
+		// If you have a KnockBack applying on you
+		if(this.knockBack != null && (input.LeftStickX != 0 || input.LeftStickY != 0)){
+			
+			// Get the LStick angle
+			float x = input.LeftStickX;
+			float y = input.LeftStickY;
+				
+			float angleStick = Vector2.Angle( new Vector2(1,0), new Vector2(x,y));
+			// Vector2.Angle always return a 180° pos angle, so this is needed when angle > 180
+			if(y < 0){
+				angleStick = 360 - angleStick;
+			}
+			
+			
+			
+			
+			
+			float DIAngle = Mathf.Sin( Mathf.Deg2Rad * ( angleStick  - this.knockBack.angle)) * this.knockBack.DIFactor * Vector2.Distance(Vector2.zero, new Vector2(x,y));
+			
+			// Calculate a new angle for the Knockback, after the DI
+			this.knockBack.angle += DIAngle /60;
+			
+			Debug.Log("Knocked.readCommand - DI angleStick = "+angleStick+" DI angle = "+DIAngle+" Kb.angle = "+this.knockBack.angle);
+		
+		}
+		
 		this.isInTechWindow = input.TechWindow;
 		
 		// If the player destun

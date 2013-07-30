@@ -132,6 +132,8 @@ public class Airborne : AFighterState {
 			}
 			
 			
+						
+			
 			// Find the right move in the moveset
 			foreach(AerialAttack ga in this.fighter.AerialMoveSet){
 				
@@ -184,6 +186,57 @@ public class Airborne : AFighterState {
 					
 				}
 				
+			}
+			
+		}
+		// If the right stick is used
+		else if(input.RightStickX != 0 || input.RightStickY != 0 || input.R3){
+			
+			// Define the orientation of this attack
+			Move.Orientation orientation = Move.Orientation.Neutral;	
+			bool rightStickUsed = false;
+			
+			//Check the Right Stick shortcuts
+			if(input.R3){				
+				orientation = Move.Orientation.Neutral;	
+				rightStickUsed = true;
+			}
+			else if(input.RightStickY > 0.8){				
+				orientation = Move.Orientation.Up;
+				rightStickUsed = true;
+			}
+			else if(input.RightStickY < -0.8){				
+				orientation = Move.Orientation.Down;
+				rightStickUsed = true;
+			}
+			else if( (this.fighter.isFacingRight && input.RightStickX > 0.8f) || (this.fighter.isFacingLeft && input.RightStickX < -0.8f) ){
+				
+				orientation = Move.Orientation.Forward;
+				rightStickUsed = true;
+			}
+			else if( (this.fighter.isFacingLeft && input.RightStickX > 0.8f) || (this.fighter.isFacingRight && input.RightStickX < -0.8f) ){
+				
+				orientation = Move.Orientation.Back;
+				rightStickUsed = true;
+			}
+			
+			// If the right stick was actually used
+			if(rightStickUsed){
+				// Find the right move in the moveset
+	  			foreach(Move aa in this.fighter.AerialMoveSet){
+					
+					if(aa is AerialAttack && !aa.isSpecial && aa.orientation == orientation){
+						
+						// Start the attack
+						Attacking attacking = this.gameObject.AddComponent<Attacking>();
+						this.fighter.State = attacking;
+						attacking.Attack = aa;
+						
+						break;
+						
+					}
+					
+				}
 			}
 			
 		}

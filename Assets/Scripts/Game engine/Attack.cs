@@ -116,12 +116,15 @@ public class Attack : MonoBehaviour {
 				// Reduce HP
 				f.CurrentHp -= this.Damage;
 				
-				// TODO Give momentum based on damage % and stuff
 				
-				// Add a momentum to the fighter
+				// Add a KnockBack to the fighter
 				KnockBack kb = f.gameObject.AddComponent<KnockBack>();
 				
-				// Set the angle of the momentum
+				// Init the KnockBack				
+				kb.DIFactor = this.BaseKnockBack.DIFactor;
+				kb.HitLags = this.BaseKnockBack.HitLags;
+				
+				// Set the angle of the KnockBack
 				if(this.Owner.isFacingLeft){
 					kb.angle = 180 - this.BaseKnockBack.angle;
 					
@@ -130,8 +133,7 @@ public class Attack : MonoBehaviour {
 					kb.angle = this.BaseKnockBack.angle;
 				}
 				
-				// 
-				//kb.reduction = this.BaseKnockBack.reduction;
+				
 									
 				
 				// KnockBack Strength formula : BaseStrength * (MissingHPPercentage)					

@@ -58,6 +58,13 @@ public class Standing : AFighterState {
 		// Dashing
 		else if(input.LeftStickDash && input.LeftStickX != 0){
 			
+			// Make the fighter face the good direction
+			if( (this.fighter.isFacingLeft && input.LeftStickX > 0) || (this.fighter.isFacingRight && input.LeftStickX < 0)){
+				
+				this.fighter.TurnAround();
+				
+			}
+			
 			Dashing dashing = this.gameObject.AddComponent<Dashing>();
 			this.fighter.State = dashing;
 			Object.Destroy(this);
@@ -124,6 +131,8 @@ public class Standing : AFighterState {
 			
 			// Define the orientation of this attack
 			Move.Orientation orientation;
+			int AttLevel = 1;
+			
 			
 			if(input.LeftStickY > 0.8){
 				orientation = Move.Orientation.Up;
@@ -138,10 +147,12 @@ public class Standing : AFighterState {
 				orientation = Move.Orientation.Neutral;
 			}
 			
+						
+			
 			// Find the right move in the moveset
 			foreach(Move ga in this.fighter.GroundMoveSet){
 				
-				if(ga is GroundAttack && !ga.isSpecial && ga.orientation == orientation && ((GroundAttack)ga).AttackLevel == 1){
+				if(ga is GroundAttack && !ga.isSpecial && ga.orientation == orientation && ((GroundAttack)ga).AttackLevel == AttLevel){
 					
 					// Start the attack
 					Attacking attacking = this.gameObject.AddComponent<Attacking>();
@@ -154,6 +165,61 @@ public class Standing : AFighterState {
 					
 				}
 				
+			}
+			
+		}
+		// If the right stick is used
+		else if(input.RightStickX != 0 || input.RightStickY != 0 || input.R3){
+			
+			// Define the orientation of this attack
+			Move.Orientation orientation = Move.Orientation.Neutral;	
+			int AttLevel = 3;
+			
+			bool rightStickUsed = false;
+			
+			//Check the Right Stick shortcuts
+			if(input.R3){				
+				orientation = Move.Orientation.Neutral;	
+				rightStickUsed = true;
+			}
+			else if(input.RightStickY > 0.8){				
+				orientation = Move.Orientation.Up;	
+				rightStickUsed = true;
+			}
+			else if(input.RightStickY < -0.8){				
+				orientation = Move.Orientation.Down;	
+				rightStickUsed = true;
+			}
+			else if( Mathf.Abs(input.RightStickX) > 0.8f ){
+				
+				// If the fighter is not facing the right direction
+				if( (this.fighter.isFacingRight && input.RightStickX < 0) || (this.fighter.isFacingLeft && input.RightStickX > 0)){
+					this.fighter.TurnAround();
+				}
+				
+				orientation = Move.Orientation.Forward;
+				rightStickUsed = true;
+			}
+			
+			// If you really used the stick
+			if(rightStickUsed){
+				// Find the right move in the moveset
+				foreach(Move ga in this.fighter.GroundMoveSet){
+					
+					if(ga is GroundAttack && !ga.isSpecial && ga.orientation == orientation && ((GroundAttack)ga).AttackLevel == AttLevel){
+						
+						// Start the attack
+						Attacking attacking = this.gameObject.AddComponent<Attacking>();
+						this.fighter.State = attacking;
+						attacking.Attack = ga;
+						attacking.AttackLevel = 1;
+						GameObject.Destroy(this);
+						
+						break;
+						
+					}
+					
+				}
 			}
 			
 		}

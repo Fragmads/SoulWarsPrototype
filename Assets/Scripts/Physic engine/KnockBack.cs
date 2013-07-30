@@ -24,6 +24,9 @@ public class KnockBack : MonoBehaviour {
 	// DI Factor
 	public float DIFactor = 10f;
 	
+	// HitLags Frame
+	public int HitLags = 10;
+	
 	
 	public Vector2 vector = new Vector2(0,0);
 	

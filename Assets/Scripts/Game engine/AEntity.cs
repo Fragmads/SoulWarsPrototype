@@ -79,10 +79,19 @@ public abstract class AEntity : MonoBehaviour {
 		
 		// For every momentum attached to this entity
 		foreach (KnockBack k in this.gameObject.GetComponents<KnockBack>()){
-						
-			// Add the strength
-			x += k.vector.x;
-			y += k.vector.y;
+			
+			// If you are no longer in Hit Lag
+			if(k.HitLags < 0){
+			
+				// Add the strength
+				x += k.vector.x;
+				y += k.vector.y;
+			}
+			else{
+				// Decrease the hit lag by one
+				k.HitLags --;
+				
+			}
 			
 		}
 		

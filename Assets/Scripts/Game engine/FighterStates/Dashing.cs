@@ -38,6 +38,8 @@ public class Dashing : AFighterState
 		// Play the dashing animation
 		this.gameObject.animation.Play("dashing", PlayMode.StopAll);	
 		
+				
+		
 	}
 	
 	// Send the name of this state
@@ -92,8 +94,9 @@ public class Dashing : AFighterState
 		}
 		
 		// TODO : include hysteresis if needed, include stop time, and a sliding momentum
+		
 		// Set state as standing, and destroy this state
-		if (wantedAcceleration == 0) {
+		if (input.LeftStickX == 0 ||(this.fighter.isFacingLeft && input.LeftStickX > 0)||( this.fighter.isFacingRight && input.LeftStickX < 0)) {
 			
 			Standing state = this.gameObject.AddComponent<Standing> ();
 			fighter.State = state;

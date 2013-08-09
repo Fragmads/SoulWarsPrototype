@@ -25,6 +25,7 @@ public abstract class AFighterState : MonoBehaviour {
 	public void Start () {
 		
 		this.fighter = this.gameObject.GetComponent<Fighter>();
+				
 		
 	}
 	

@@ -36,7 +36,9 @@ public class Dashing : AFighterState
 		
 		
 		// Play the dashing animation
+		this.fighter.SetAnimationSpeed("dashing");
 		this.gameObject.animation.Play("dashing", PlayMode.StopAll);	
+		
 		
 				
 		

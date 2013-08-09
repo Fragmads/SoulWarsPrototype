@@ -30,9 +30,9 @@ public class Standing : AFighterState {
 		
 		
 		// Start the standing animation
+		this.fighter.SetAnimationSpeed("standing");
 		this.gameObject.animation.Play("standing", PlayMode.StopAll);
-		
-		
+			
 		
 	}
 	

@@ -28,6 +28,7 @@ public class Jumping : AFighterState {
 		this.JumpLag = this.fighter.JumpLag;
 		
 		// play the jumping animation
+		this.fighter.SetAnimationSpeed("jumping");
 		this.gameObject.animation.Play("jumping", PlayMode.StopAll);
 		
 	}

@@ -29,6 +29,7 @@ public class WaveLanding : AFighterState {
 		base.Start();
 		
 		// play the landing animation
+		this.fighter.SetAnimationSpeed("landing");
 		this.gameObject.animation.Play("landing", PlayMode.StopAll);
 		
 	}

@@ -123,9 +123,36 @@ public class Fighter : GravityEntity {
 	public float RollInvincibilityStart = 0.3f;
 	public float RollInvincibilityEnd = 0.8f;
 	
+	// Animation Speed
+	public float DefaultAnimationSpeed = 1.0f;
+	public Hashtable SpecificAnimationSpeed;
+	public List<string> SpecificAnimationSpeedName;
+	public List<float> SpecificAnimationSpeedValue;
+		
+	
+	
 	
 	// Method
 	//
+	
+	public void Awake(){
+		
+		// Create the HashTable of specific animation from the lists
+		
+		// If the list has the same count
+		if(this.SpecificAnimationSpeedName.Count == this.SpecificAnimationSpeedValue.Count){
+			
+			this.SpecificAnimationSpeed = new Hashtable();
+			
+			for(int i=0; i<this.SpecificAnimationSpeedName.Count; i++){
+				
+				this.SpecificAnimationSpeed.Add(this.SpecificAnimationSpeedName[i], this.SpecificAnimationSpeedValue[i]);
+				
+			}
+			
+		}
+		
+	}
 	
 	public new void Start(){
 		
@@ -281,6 +308,28 @@ public class Fighter : GravityEntity {
 		}
 		
 		return false;
+		
+	}
+	
+	// Set the speed of the animation
+	public void SetAnimationSpeed(string animationName){
+		
+		// if the animation is valid
+		if(this.animation.GetClip(animationName) != null){
+		
+			//If this is animation has a specific speed
+			if(this.SpecificAnimationSpeed.ContainsKey(animationName)){
+				
+				// Set the speed of the animation
+				this.animation[animationName].speed = (float) this.SpecificAnimationSpeed[animationName];
+				
+			}
+			else {
+				// Set the speed of the animation
+				this.animation[animationName].speed = this.DefaultAnimationSpeed;
+				
+			}
+		}
 		
 	}
 	

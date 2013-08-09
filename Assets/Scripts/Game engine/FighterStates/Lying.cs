@@ -31,6 +31,10 @@ public class Lying : AFighterState {
 		
 		this.gameObject.GetComponent<XMomentum>().strength = 0;
 		
+		// play the lying animation
+		this.fighter.SetAnimationSpeed("lying");
+		this.gameObject.animation.Play("lying", PlayMode.StopAll);
+		
 	}
 	
 	// Send the name of this state

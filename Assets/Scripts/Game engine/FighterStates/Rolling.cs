@@ -43,7 +43,21 @@ public class Rolling : AFighterState {
 		this.RollInvincibilityStart = this.fighter.RollInvincibilityStart;
 		this.RollInvincibilityEnd = this.fighter.RollInvincibilityEnd;
 		
-		
+		// If this is a FRoll
+		if( (this.fighter.isFacingLeft && this.isLeft) ||(this.fighter.isFacingRight && this.isRight) ){
+			
+			// play the forward roll animation
+			this.fighter.SetAnimationSpeed("FRoll");
+			this.gameObject.animation.Play("FRoll", PlayMode.StopAll);
+			
+		}
+		else{
+			
+			// play the backward roll animation
+			this.fighter.SetAnimationSpeed("BRoll");
+			this.gameObject.animation.Play("BRoll", PlayMode.StopAll);
+			
+		}
 		
 	}
 	

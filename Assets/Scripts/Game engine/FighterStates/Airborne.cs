@@ -35,6 +35,7 @@ public class Airborne : AFighterState {
 		this.JumpLeft = this.fighter.DoubleJump;
 		
 		// Play the airborne animation
+		this.fighter.SetAnimationSpeed("airborne");
 		this.gameObject.animation.Play("airborne");		
 		
 		// Be sure that you are no longer edge grabbing

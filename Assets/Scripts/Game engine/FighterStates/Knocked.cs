@@ -40,6 +40,7 @@ public class Knocked : AFighterState {
 		}
 		
 		// play the knocked animation
+		this.fighter.SetAnimationSpeed("knocked");
 		this.gameObject.animation.Play("knocked", PlayMode.StopAll);
 		
 	}

@@ -97,7 +97,9 @@ public class OnGround : AFighterState {
 		if(this.gameObject.GetComponent<WaveLanding>() != null){
 			GameObject.Destroy(this.gameObject.GetComponent<WaveLanding>());
 		}
-		
+		if(this.gameObject.GetComponent<Rolling>() != null){
+			GameObject.Destroy(this.gameObject.GetComponent<Rolling>());
+		}
 		
 		GameObject.Destroy(this);
 		

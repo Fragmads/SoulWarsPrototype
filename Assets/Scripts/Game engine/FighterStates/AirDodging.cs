@@ -52,6 +52,11 @@ public class AirDodging : AFighterState {
 		
 		base.Start();
 		
+		// Play the air dodge animation
+		this.fighter.SetAnimationSpeed("airDodge");
+		this.gameObject.animation.Play("airDodge");		
+		
+		
 		// Calculate the angle and strength of this air dodge
 		Vector2 point = new Vector2(this.DirectionX, this.DirectionY);
 		this.angle = Vector2.Angle(Vector2.right, point);

@@ -22,6 +22,7 @@ public class Walking : AFighterState {
 		base.Start ();
 		
 		// play the walking animation
+		this.fighter.SetAnimationSpeed("walking");
 		this.gameObject.animation.Play("walking", PlayMode.StopAll);
 		
 	}

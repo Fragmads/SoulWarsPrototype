@@ -44,6 +44,7 @@ public class Landing : AFighterState {
 		
 		
 		// play the landing animation
+		this.fighter.SetAnimationSpeed("landing");
 		this.gameObject.animation.Play("landing", PlayMode.StopAll);
 		
 		

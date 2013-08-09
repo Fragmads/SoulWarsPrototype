@@ -33,6 +33,8 @@ public class ControllerDebugInput : InputCommand {
 		
 		// Init the XInput player
 		
+		
+		// TODO ensure that the controller is not already used by another fighter
 		// Find a PlayerIndex, for a single player game
         if (!playerIndexSet || !prevState.IsConnected)
         {

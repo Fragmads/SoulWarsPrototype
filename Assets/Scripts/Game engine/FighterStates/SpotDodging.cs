@@ -29,6 +29,7 @@ public class SpotDodging : AFighterState {
 		base.Start();
 		
 		// Play the dodging animation
+		this.fighter.SetAnimationSpeed("dodging");
 		this.gameObject.animation.Play("dodging", PlayMode.StopAll);	
 		
 		this.animationLength = this.fighter.SpotDodgeLength;

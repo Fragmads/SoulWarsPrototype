@@ -30,6 +30,7 @@ public class Attacking : AFighterState {
 		
 		
 		// Play the animation
+		this.fighter.SetAnimationSpeed(this.Attack.AnimationName);	
 		this.gameObject.animation.Play(this.Attack.AnimationName, PlayMode.StopAll);
 		
 		// Instantiate a game object that will represent the attack

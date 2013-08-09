@@ -48,6 +48,7 @@ public class LedgeGrabbing : AFighterState {
 		}
 		
 		// play the ledgeGrab animation
+		this.fighter.SetAnimationSpeed("ledgeGrab");
 		this.gameObject.animation.Play("ledgeGrab", PlayMode.StopAll);
 		
 	}

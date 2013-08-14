@@ -109,8 +109,10 @@ public class Airborne : AFighterState {
 		}
 		
 		// Air Control
-		this.AirControl(input);
 		
+		if(this.gameObject != null){
+			this.AirControl(input);
+		}
 		
 		// Aerial attack
 		// Special Move
@@ -338,13 +340,50 @@ public class Airborne : AFighterState {
 						
 					}
 					
+					// For all the Knockback of this fighter
+					foreach (KnockBack k in this.gameObject.GetComponents<KnockBack>()){
+						
+						downStrength += k.vector.y;
+						
+					}
+					
 					// If the fighter is splashed to the ground
 					if( downStrength < -(this.fighter.Weight * this.fighter.SplashFactor) ){
 						
 						// TODO deal damage and make the fighter rebounce
 						Debug.Log("Splash");
 						
+						// Destroy other KnockBack
+						foreach(KnockBack k in this.fighter.GetComponents<KnockBack>()){
+							GameObject.Destroy(k);
+						}
+						
+						KnockBack splashKnockBack = this.fighter.gameObject.AddComponent<KnockBack>();
+						splashKnockBack.angle = 90;
+						splashKnockBack.strength = -downStrength;
+						splashKnockBack.HitLags = 2;
+						splashKnockBack.length = 0.5f;
+						
+						Knocked knocked = this.fighter.GetComponent<Knocked>();
+						knocked.PureKnockTime = 0.15f;
+						knocked.KnockTime = 0.25f;
+						knocked.knockBack = splashKnockBack;
+						
+						
+						
 					}
+					// The fighter is taking the hit but it's not enough
+					else if(downStrength > -(this.fighter.Weight) && downStrength < 0){
+						
+						// The fighter land safely						
+						Standing standing = this.gameObject.AddComponent<Standing>();
+						this.fighter.State = standing;
+						
+						this.OnGround(p);
+						
+						Debug.Log("Airborne - Tankig the hit");
+						
+					}					
 					// The fighter is lying on the floor
 					else {
 						

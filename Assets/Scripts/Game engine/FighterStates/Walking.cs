@@ -123,6 +123,9 @@ public class Walking : AFighterState {
 				
 				if(ga.isSpecial && ga.orientation == orientation){
 					
+					// Stop this fighter to launch the attack					
+					groundMomentum.strength = 0;
+					
 					// Start the special
 					Attacking attacking = this.gameObject.AddComponent<Attacking>();
 					this.fighter.State = attacking;
@@ -163,6 +166,10 @@ public class Walking : AFighterState {
 			foreach(GroundAttack ga in this.fighter.GroundMoveSet){
 				
 				if(!ga.isSpecial && ga.orientation == orientation && ga.AttackLevel == AttLevel){
+					
+					
+					// Stop this fighter to launch the attack					
+					groundMomentum.strength = 0;
 					
 					// Start the attack
 					Attacking attacking = this.gameObject.AddComponent<Attacking>();
@@ -217,6 +224,9 @@ public class Walking : AFighterState {
 				foreach(Move ga in this.fighter.GroundMoveSet){
 					
 					if(ga is GroundAttack && !ga.isSpecial && ga.orientation == orientation && ((GroundAttack)ga).AttackLevel == AttLevel){
+						
+						// Stop this fighter to launch the attack					
+						groundMomentum.strength = 0;
 						
 						// Start the attack
 						Attacking attacking = this.gameObject.AddComponent<Attacking>();

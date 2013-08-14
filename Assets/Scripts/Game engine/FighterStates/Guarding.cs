@@ -23,7 +23,7 @@ public class Guarding : AFighterState {
 		
 		// Play the guard animation
 		this.fighter.SetAnimationSpeed("guard");
-		this.gameObject.animation.Play("guard", PlayMode.StopAll);	
+		this.gameObject.animation.Play("guard");	
 		
 	}
 	

@@ -17,9 +17,12 @@ public class Attacking : AFighterState {
 	
 	public Move Attack;
 	
-	// The number of attack (Only available for ground attack, possible value : 0, 1, 2, 3)
+	// The number of the attack (Only available for ground attack, possible value : 0, 1, 2, 3)
 	public int AttackLevel = 0;
 		
+	public bool BufferNextLevelAttack = false;
+	
+	private int currentFrame = 0;
 	
 	// Method
 	//
@@ -49,7 +52,9 @@ public class Attacking : AFighterState {
 	
 	// Read the command send by the player, and interpret them
 	public override void readCommand (InputCommand input ){
-						
+					
+		this.currentFrame ++;
+		
 		// If this attack is not a special and is performed on the ground
 		if(!this.Attack.isSpecial && this.Attack is GroundAttack){
 						
@@ -57,32 +62,45 @@ public class Attacking : AFighterState {
 			if(this.Attack.isEnded && input.Attack && this.AttackLevel < 3){
 				
 				// Destroy the dummy for the past attack
-				GameObject.Destroy(this.Attack.gameObject);
+			//	GameObject.Destroy(this.Attack.gameObject);
 				
 				// Launch an attack
-				this.LaunchAttack(input);			
+			//	this.LaunchAttack(input);			
 				
 			}
 			
 			// If the player want to go to the next level of attack
 			if(input.CommandAttack){
 				
-				this.AttackLevel++;
+				// If the attack is just starting, go right away on the next level 
+				if(((GroundAttack)this.Attack).NextAttackBuffering > this.currentFrame ){
 				
-				// Cap the attack level at 3
-				if(this.AttackLevel <4){
-				
-					// Destroy the dummy for the past attack
-					this.Attack.EndMove();
-					GameObject.Destroy(this.Attack.gameObject);
+					Debug.Log("Attacking.readCommand - Skip to next level");
 					
-					// Launch an attack
-					this.LaunchAttack(input);
+					this.AttackLevel++;
+					
+					// Cap the attack level at 3
+					if(this.AttackLevel <4){
+					
+						// Destroy the dummy for the past attack
+						this.Attack.EndMove();
+						GameObject.Destroy(this.Attack.gameObject);
+						
+						// Launch an attack
+						this.LaunchAttack(input);
+					}
+					else{
+						this.AttackLevel = 3;
+						
+					}
 				}
-				else{
-					this.AttackLevel = 3;
+				else {
+					// End the attack before going to the next level
+					this.BufferNextLevelAttack = true;
+					
+					Debug.Log("Attacking.readCommand - Buffer next Attack BufferingFrame "+((GroundAttack)this.Attack).NextAttackBuffering+" current Frame "+ this.currentFrame);
+					
 				}
-				
 			}
 						 
 		}
@@ -94,15 +112,33 @@ public class Attacking : AFighterState {
 			
 			if(this.gameObject.GetComponent<OnGround>() != null){
 				
-				// TODO stand
-				this.fighter.State = this.gameObject.AddComponent<Standing>();
-				GameObject.Destroy(this);
+				// If the player want to go to the next attack
+				if(this.BufferNextLevelAttack && this.AttackLevel <3){
+					
+					this.AttackLevel++;
+					
+					// Cap the attack level at 3
+					
+					// Destroy the dummy for the past attack
+					this.Attack.EndMove();
+					GameObject.Destroy(this.Attack.gameObject);
+					
+					// Launch an attack
+					this.LaunchAttack(input);
+					
+					this.BufferNextLevelAttack = false;
+					this.currentFrame = 0;
+					
+				}
+				else{
+					this.fighter.State = this.gameObject.AddComponent<Standing>();
+					GameObject.Destroy(this);
+				}
 				
 			}
 			
 			if(this.gameObject.GetComponent<Airborne>() != null){
-				
-				// TODO airborne				
+								
 				this.fighter.State = this.gameObject.GetComponent<Airborne>();
 				GameObject.Destroy(this);				
 				

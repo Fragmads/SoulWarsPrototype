@@ -10,9 +10,12 @@ public class GroundAttack : Move {
 	
 	public int AttackLevel = 0;
 	
+	// Number of frame - If the player hit the attack button again to go for the next attack after this time, the attack proceeding will complete first
+	public int NextAttackBuffering = 12;
+	
+	
 	// Method
 	//
-	
 	
 	
 	
